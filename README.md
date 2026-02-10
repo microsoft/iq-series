@@ -44,6 +44,12 @@ The IQ Series helps developers and data practitioners understand Foundry IQ as M
 | [Building the Data Pipeline with Knowledge Sources](./2-Foundry-IQ-Building-the-Data-Pipeline-with-Knowledge-Sources/README.md)      | Learn how different content enters Foundry IQ from various sources                 | Coming Soon     | [Sample](./2-Foundry-IQ-Building-the-Data-Pipeline-with-Knowledge-Sources/sample/)       | Coming Soon     |
 | [Querying the Multi-Source AI Knowledge Bases](./3-Foundry-IQ-Querying-the-Multi-Source-AI-Knowledge-Bases/README.md)                | Dive into Knowledge Bases and multi-source query paths                             | Coming Soon     | [Sample](./3-Foundry-IQ-Querying-the-Multi-Source-AI-Knowledge-Bases/sample/)            | Coming Soon     |
 
+## 📓 Cookbook
+
+Looking for a quick, end-to-end hands-on guide? The **[Foundry IQ End-to-End Cookbook](./4-Foundry-IQ-End-to-End-Cookbook/README.md)** is a single Jupyter notebook that covers the full Foundry IQ lifecycle — from creating a search index and knowledge source, to querying a knowledge base with agentic retrieval, to grounding a Foundry agent in your data.
+
+👉 **[Open the cookbook notebook](./4-Foundry-IQ-End-to-End-Cookbook/sample/foundry-iq-cookbook.ipynb)**
+
 ### Episode Format
 
 Each episode includes:
