@@ -54,7 +54,7 @@ az ad signed-in-user show --query id -o tsv
 
 - Customize the resource prefix, location, and SKUs as needed, then click **Review + create**
 
-Once deployment completes, copy the **Azure AI Search endpoint** from the deployment **Outputs** tab. You'll need it in the next step.
+Once deployment completes, copy the **Azure AI Search endpoint** and **API key** from the deployment **Outputs** tab. You'll need them in the next step.
 
 ### 2. Learn with Copilot
 
@@ -63,13 +63,10 @@ Once deployment completes, copy the **Azure AI Search endpoint** from the deploy
 Launch a Codespace and start exploring Foundry IQ with GitHub Copilot. Copilot connects to your deployed knowledge base via MCP. Ask questions about your data and get grounded, cited answers.
 
 1. Click the button above to open a Codespace
-2. In the terminal, set your search endpoint from the deployment Outputs tab:
-
-   ```bash
-   export SEARCH_ENDPOINT=https://<your-search-service>.search.windows.net
-   ```
-
-3. Open **Copilot Chat**, click the **🔧 Tools** icon, find **foundry-iq**, and enable it
+2. Open `.vscode/mcp.json` and replace the two placeholders with your values from the deployment **Outputs** tab:
+   - `<your-search-service>` → your AI Search service name
+   - `<your-search-api-key>` → your AI Search admin API key
+3. Open **Copilot Chat**, click the **🔧 Tools** icon — **foundry-iq** should now appear. Enable it
 4. Ask Copilot questions about your knowledge base, try these:
 
    - *"What does Earth look like at night from space?"*
@@ -82,7 +79,7 @@ Launch a Codespace and start exploring Foundry IQ with GitHub Copilot. Copilot c
    - *"What is a knowledge source vs a knowledge base?"*
    - *"Help me create a new knowledge base with a different index"*
 
-> You can also use the repo locally. Clone the repo, open in VS Code, set the `SEARCH_ENDPOINT` environment variable, and the MCP config loads automatically.
+> You can also use the repo locally. Clone the repo, open in VS Code, update `.vscode/mcp.json` with your values, and the MCP server appears in Copilot Chat Tools.
 
 ## 🙏 Get Involved
 

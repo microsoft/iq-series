@@ -14,6 +14,8 @@
       ],
       "settings": {
         "chat.mcp.discovery.enabled": true,
+        "chat.mcp.enabled": true,
+        "github.copilot.chat.mcp.enabled": true,
         "python.defaultInterpreterPath": "/usr/local/bin/python"
       }
     }

@@ -1,10 +1,10 @@
 {
   "servers": {
     "foundry-iq": {
-      "type": "sse",
-      "url": "${env:SEARCH_ENDPOINT}/knowledgebases/earth-knowledge-base/mcp?api-version=2025-11-01-Preview",
+      "type": "http",
+      "url": "https://<your-search-service>.search.windows.net/knowledgebases/earth-knowledge-base/mcp?api-version=2025-11-01-Preview",
       "headers": {
-        "Authorization": "Bearer ${command:github.copilot.chat.mcp.getToken}"
+        "api-key": "<your-search-api-key>"
       }
     }
   }

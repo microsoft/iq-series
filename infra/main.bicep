@@ -405,6 +405,9 @@ resource seedDataScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = if 
 @description('AI Search endpoint')
 output searchEndpoint string = 'https://${searchService.name}.search.windows.net'
 
+@description('AI Search admin API key')
+output searchApiKey string = searchService.listAdminKeys().primaryKey
+
 @description('Azure OpenAI endpoint')
 output openAiEndpoint string = openAiService.properties.endpoint
 

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.39.26.7824",
-      "templateHash": "13882953691116998848"
+      "templateHash": "12606201925686922947"
     }
   },
   "parameters": {
@@ -502,6 +502,13 @@
         "description": "AI Search endpoint"
       },
       "value": "[format('https://{0}.search.windows.net', variables('names').search)]"
+    },
+    "searchApiKey": {
+      "type": "string",
+      "metadata": {
+        "description": "AI Search admin API key"
+      },
+      "value": "[listAdminKeys(resourceId('Microsoft.Search/searchServices', variables('names').search), '2023-11-01').primaryKey]"
     },
     "openAiEndpoint": {
       "type": "string",
