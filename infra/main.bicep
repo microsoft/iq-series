@@ -233,6 +233,49 @@ resource chatDeployment 'Microsoft.CognitiveServices/accounts/deployments@2023-1
 }
 
 // ===============================================
+// MODEL DEPLOYMENTS (AI Services / Foundry)
+// Deployed on the AI Services account so they
+// appear in the Foundry project portal
+// ===============================================
+
+resource aiServicesEmbeddingDeployment 'Microsoft.CognitiveServices/accounts/deployments@2023-10-01-preview' = {
+  parent: aiServices
+  name: names.embeddingDeployment
+  properties: {
+    model: {
+      format: 'OpenAI'
+      name: embeddingModelName
+      version: embeddingModelVersion
+    }
+    raiPolicyName: 'Microsoft.Default'
+  }
+  sku: {
+    name: 'Standard'
+    capacity: embeddingModelCapacity
+  }
+}
+
+resource aiServicesChatDeployment 'Microsoft.CognitiveServices/accounts/deployments@2023-10-01-preview' = {
+  parent: aiServices
+  name: names.chatDeployment
+  properties: {
+    model: {
+      format: 'OpenAI'
+      name: chatModelName
+      version: chatModelVersion
+    }
+    raiPolicyName: 'Microsoft.Default'
+  }
+  sku: {
+    name: 'GlobalStandard'
+    capacity: chatModelCapacity
+  }
+  dependsOn: [
+    aiServicesEmbeddingDeployment
+  ]
+}
+
+// ===============================================
 // SERVICE PRINCIPAL ROLE ASSIGNMENTS
 // (AI Search managed identity → OpenAI & AI Services)
 // ===============================================

@@ -40,12 +40,9 @@ AOAI_EMBEDDING_MODEL=text-embedding-3-large
 AOAI_EMBEDDING_DEPLOYMENT=text-embedding-3-large
 AOAI_GPT_MODEL=gpt-4o-mini
 AOAI_GPT_DEPLOYMENT=gpt-4o-mini
-FOUNDRY_PROJECT_ENDPOINT=https://<your-ai-services>.services.ai.azure.com/api/projects/<your-project>
-FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
-AZURE_AI_SEARCH_CONNECTION_NAME=iq-series-search-connection
 ```
 
-**Where to find these values:** All values are available in the deployment **Outputs** tab in the Azure portal. You can also find them in [Microsoft Foundry](https://ai.azure.com) → your project → **Overview**.
+**Where to find these values:** All values are available in the deployment **Outputs** tab in the Azure portal.
 
 For CLI deployment and cleanup instructions, see the [Infrastructure Guide](../../infra/README.md).
 
@@ -64,7 +61,7 @@ The [**Foundry IQ Cookbook**](./foundry-iq-cookbook.ipynb) walks you through que
 ### Quick Start
 
 1. Install dependencies: `pip install -U azure-search-documents==11.7.0b2 azure-identity python-dotenv`
-2. Sign in to Azure: `az login --use-device-code`
+2. Sign in to Azure: run `az login` in a terminal
 3. Create a `.env` file with your endpoint values (see the notebook for details)
 4. Open `foundry-iq-cookbook.ipynb` in VS Code or Jupyter and run the cells
 

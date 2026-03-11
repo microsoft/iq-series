@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.39.26.7824",
-      "templateHash": "12606201925686922947"
+      "templateHash": "8846229865520299686"
     }
   },
   "parameters": {
@@ -283,6 +283,47 @@
       "dependsOn": [
         "[resourceId('Microsoft.CognitiveServices/accounts/deployments', variables('names').openAi, variables('names').embeddingDeployment)]",
         "[resourceId('Microsoft.CognitiveServices/accounts', variables('names').openAi)]"
+      ]
+    },
+    {
+      "type": "Microsoft.CognitiveServices/accounts/deployments",
+      "apiVersion": "2023-10-01-preview",
+      "name": "[format('{0}/{1}', variables('names').aiServices, variables('names').embeddingDeployment)]",
+      "properties": {
+        "model": {
+          "format": "OpenAI",
+          "name": "[parameters('embeddingModelName')]",
+          "version": "[parameters('embeddingModelVersion')]"
+        },
+        "raiPolicyName": "Microsoft.Default"
+      },
+      "sku": {
+        "name": "Standard",
+        "capacity": "[parameters('embeddingModelCapacity')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('names').aiServices)]"
+      ]
+    },
+    {
+      "type": "Microsoft.CognitiveServices/accounts/deployments",
+      "apiVersion": "2023-10-01-preview",
+      "name": "[format('{0}/{1}', variables('names').aiServices, variables('names').chatDeployment)]",
+      "properties": {
+        "model": {
+          "format": "OpenAI",
+          "name": "[parameters('chatModelName')]",
+          "version": "[parameters('chatModelVersion')]"
+        },
+        "raiPolicyName": "Microsoft.Default"
+      },
+      "sku": {
+        "name": "GlobalStandard",
+        "capacity": "[parameters('chatModelCapacity')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('names').aiServices)]",
+        "[resourceId('Microsoft.CognitiveServices/accounts/deployments', variables('names').aiServices, variables('names').embeddingDeployment)]"
       ]
     },
     {
