@@ -1,6 +1,8 @@
-# The IQ Series
+<h1 align="center">The Microsoft IQ Series</h1>
 
-![The IQ Series Banner](./images/iq-series-banner.png)
+<p align="center">
+  <img src="./images/IQ-Banner-v2.jpg" alt="The IQ Series Banner" />
+</p>
 
 Master Microsoft IQ with The IQ Series! Microsoft IQ is Microsoft's unified intelligence layer for the enterprise, bringing together three core intelligence services:
 
