@@ -4,7 +4,7 @@
   <img src="./images/IQ-Banner-v2.jpg" alt="The IQ Series Banner" />
 </p>
 
-Master Microsoft IQ with The IQ Series! Microsoft IQ is Microsoft's unified intelligence layer for the enterprise, bringing together three core intelligence services:
+Learn Microsoft IQ with The IQ Series! Microsoft IQ is Microsoft's unified intelligence layer for the enterprise, bringing together three core intelligence services:
 
 - **Foundry IQ**: A managed knowledge layer for enterprise data; connecting structured and unstructured data across Azure, SharePoint, OneLake, and the web so agents can access permission-aware knowledge.
 - **Work IQ**: The intelligence layer that personalizes Microsoft 365 Copilot; understanding context, relationships, and work patterns so agents can be faster, more accurate, and more secure.
