@@ -28,6 +28,8 @@ Together, these IQs enable AI agents to reason, retrieve, and act with deep busi
 
 ## 🏅 Earn the Foundry IQ Badge
 
+<img src="./images/foundryiq-badge.png" alt="Foundry IQ Badge" width="150" align="left" style="margin-right: 20px; margin-bottom: 10px;" hspace="20" vspace="10" />
+
 Completed all three Foundry IQ cookbooks? You can now request your community badge.
 
 1. Fork this repo and save your notebook outputs in your fork
@@ -36,6 +38,8 @@ Completed all three Foundry IQ cookbooks? You can now request your community bad
 4. Complete the required [badge form](https://aka.ms/iq-series/badge-form)
 
 > Badges are issued by the Global AI Community, so please make sure you have an account before submitting.
+
+<br clear="left" />
 
 ### Episode Format
 
