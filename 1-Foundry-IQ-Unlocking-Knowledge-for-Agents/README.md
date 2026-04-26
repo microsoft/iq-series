@@ -23,9 +23,9 @@ A visual summary of key takeaways by Tomomi Imura, showing how Foundry IQ fits i
 
 ![Doodle summary Episode 1](../images/visuals/E1-recap.png)
 
-## � Try the Cookbook
+## Try the Cookbook
 
-Ready to get hands-on? Head to the [Episode 1 Cookbook](./cookbook/) for prerequisites, deployment instructions, and a step-by-step Jupyter notebook.
+Go to the Episode 1 Cookbook for prerequisites, deployment instructions, and the step-by-step Jupyter notebook.
 
 ## 🔗 Learn More
 
