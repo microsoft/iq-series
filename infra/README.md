@@ -8,7 +8,7 @@ This folder contains the infrastructure-as-code to deploy all Azure resources ne
 
 Click the button above to deploy directly from the Azure Portal. You'll be prompted for:
 - **User Object ID** — run `az ad signed-in-user show --query id -o tsv` to get yours
-- **Resource Prefix** — a short name prefix for all resources (default: `iqseries`)
+- **Resource Prefix** — a short name prefix for all resources (default: `iqs`)
 - **Location** — Azure region (must support [agentic retrieval](https://learn.microsoft.com/azure/search/search-region-support))
 
 > **⚠️ Troubleshooting: Deployment script failed?**

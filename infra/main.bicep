@@ -10,7 +10,7 @@
 param userObjectId string
 
 @description('Resource name prefix')
-param resourcePrefix string = 'iqseries'
+param resourcePrefix string = 'iqs'
 
 @description('Azure region — must support agentic retrieval (see https://learn.microsoft.com/azure/search/search-region-support)')
 param location string = 'eastus2'
