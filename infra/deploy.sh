@@ -7,7 +7,7 @@ set -e
 
 RESOURCE_GROUP=""
 LOCATION=""
-RESOURCE_PREFIX="iqseries"
+RESOURCE_PREFIX="iqs"
 SEARCH_SKU="standard"
 
 # Parse arguments
@@ -25,7 +25,7 @@ while getopts "g:l:p:s:h" opt; do
       echo "  -l  Azure location (e.g., eastus2)"
       echo ""
       echo "Optional:"
-      echo "  -p  Resource prefix (default: iqseries)"
+      echo "  -p  Resource prefix (default: iqs)"
       echo "  -s  Search service SKU (default: standard)"
       echo "  -h  Show this help message"
       exit 0

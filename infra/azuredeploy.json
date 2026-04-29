@@ -17,7 +17,7 @@
     },
     "resourcePrefix": {
       "type": "string",
-      "defaultValue": "iqseries",
+      "defaultValue": "iqs",
       "metadata": {
         "description": "Resource name prefix"
       }
