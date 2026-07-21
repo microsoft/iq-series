@@ -219,7 +219,7 @@ For more information, see the [Work IQ CLI documentation](https://learn.microsof
 
 ## 📓 Lab Instructions
 
-The [**Work IQ Lab for Episode 02**](./work-iq-lab02.md) walks you through the basic capabilities of Work IQ, step by step:
+The [**Work IQ Lab for Episode 02**](./work-iq-lab02.md) walks you through the basic capabilities of Work IQ A2A, step by step:
 
 1. Asking a prompt via Work IQ A2A
 1. Asking a second prompt via Work IQ A2A within the same conversation context
