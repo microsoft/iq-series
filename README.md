@@ -18,6 +18,8 @@ Together, these IQs enable AI agents to reason, retrieve, and act with deep busi
 
 📺 Work IQ episodes premiere **9 AM PT on June 2, 2026** on [Microsoft Developer YouTube](https://aka.ms/iq-series/episodes).
 
+▶️ Watch all available episodes in the [Microsoft IQ Series playlist](https://aka.ms/iq-series/playlist).
+
 ## 📚 Episodes
 
 | **Episode**                                                                                                                          | **Description**                                                                    | **Video**       | **Cookbook/Lab**                                                                         |
