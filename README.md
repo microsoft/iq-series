@@ -40,6 +40,13 @@ Each episode includes:
 
 Episode folders also include Jupyter notebook cookbooks or markdown lab instructions with hands-on and step-by-step guidance.
 
+## 🚀 Continue Your Microsoft IQ Learning
+
+The IQ Series combines expert-led episodes with hands-on cookbooks and labs. You can also explore these complementary learning experiences:
+
+- Explore the [Microsoft IQ Deep Dive](https://aka.ms/iqdeepdive), a three-day workshop concept with Python notebooks and agents that bring together Foundry IQ, Work IQ, Fabric IQ, and Web IQ.
+- Register for and catch up on [Microsoft IQ Live](https://aka.ms/MicrosoftIQLive) for IQ news, product updates, demonstrations, architecture guidance, and new concepts from the ongoing live series.
+
 ## 🏅 Earn the Foundry IQ Badge
 
 <img src="./images/foundry-iq/foundryiq-badge.png" alt="Foundry IQ Badge" width="150" align="left" style="margin-right: 20px; margin-bottom: 10px;" hspace="20" vspace="10" />
