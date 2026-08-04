@@ -2,7 +2,7 @@ name: 'Work IQ Badge Request'
 description: "Submit this issue to acknowledge completion of all 3 Work IQ episode labs."
 title: "<First Name Last Name> Work IQ Badge Request"
 labels:
-  - work-iq-badge
+  - Work IQ - Badge Request
 body:
   - type: markdown
     attributes:

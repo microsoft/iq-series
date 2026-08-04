@@ -2,7 +2,7 @@ name: 'Foundry IQ Badge Request'
 description: "Submit this issue to acknowledge completion of all 3 Foundry IQ episode cookbooks."
 title: "<First Name Last Name> Foundry IQ Badge Request"
 labels:
-  - foundry-iq-badge
+  - Foundry IQ - Badge Request
 body:
   - type: markdown
     attributes:

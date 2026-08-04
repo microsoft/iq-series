@@ -15,118 +15,83 @@ Think of MCP as how an agent uses capabilities, and A2A as how agents collaborat
 
 In this lab you are going to learn how to leverage Work IQ via A2A.
 
-## Start Work IQ CLI in A2A Server mode
+## Run the supported Work IQ A2A sample
 
-You can run the following scripts directly from a terminal session, for example using the PowerShell terminal or the Bash terminal, depending on the platform where you are running this cookbook.
+> [!IMPORTANT]
+> Work IQ CLI 1.0 no longer includes the legacy `workiq a2aserver`
+> command. Use the current Microsoft Work IQ A2A sample instead.
 
-Run the following command, to accept the end user license agreement, if you haven't done it yet:
+Complete the app registration and delegated `WorkIQAgent.Ask` permission
+steps in the
+[Work IQ A2A quickstart](https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/work-iq/a2a/quickstart).
+Keep the resulting application ID and tenant ID available as `APP_ID` and
+`TENANT_ID`.
 
+Clone the official samples:
+
+```bash
+git clone https://github.com/microsoft/work-iq-samples.git
+cd work-iq-samples/dotnet/a2a
 ```
-workiq accept-eula
+
+On Windows, start the .NET A2A client with Windows Account Manager:
+
+```bash
+dotnet run -- --token WAM --appid <APP_ID> --tenant <TENANT_ID>
 ```
 
-Now run the following command to start the A2A Server mode:
+On macOS and Linux, WAM is unavailable. Start the client with a pre-obtained
+Work IQ bearer token instead:
 
-```
-workiq a2aserver
+```bash
+dotnet run -- --token <JWT>
 ```
 
-You can see a message informing you that the "Work IQ A2A Server started at http://localhost:5100".
-There is also a message like "Agent card available at: http://localhost:5100/.well-known/agent-card.json".
-Copy the URL of the agent card into your clipboard.
+After authentication, the terminal displays a `READY` line for the Work IQ
+A2A gateway.
 
 ## Consume Work IQ via A2A
 
-Check that the A2A Inspector tool is up and running, accordingly to the prerequisites described in the [Episode 2 README](../README.md).
-Open a browser and navigate to the URL of the A2A Inspector. The A2A Inspector URL should be [http://127.0.0.1:5001](http://127.0.0.1:5001) when running A2A Inspector locally, or [http://127.0.0.1:8080](http://127.0.0.1:8080) when running it from a Docker container.
+At the `You >` prompt, send:
 
-
-Once the A2A Inspector tool renders in your browser, paste the agent card URL into the text field at the top of the inspector page and select the **Connect** button.
-
-![The user interface of the A2A Inspector. At the top there is a textbox to paste the URL of the agent card.](../../../images/work-iq/a2a-inspector-ui.png)
-
-The A2A Inspector will connect to your locally running Work IQ A2A Server. In the terminal window where you are running the Work IQ CLI, you can see the tracing of the requests made by the A2A Inspector. In the interface of the A2A Inspector you can see the agent card downloaded and validated in the **Agent Card** section.
-
-The agent card looks like the following JSON.
-
-```JSON
-{
-  "additionalInterfaces": [],
-  "capabilities": {
-    "extensions": [],
-    "pushNotifications": false,
-    "stateTransitionHistory": false,
-    "streaming": true
-  },
-  "defaultInputModes": [
-    "text/plain"
-  ],
-  "defaultOutputModes": [
-    "text/plain"
-  ],
-  "description": "Relays messages to Microsoft 365 Copilot via REST or A2A protocol",
-  "name": "Work IQ Relay Agent",
-  "preferredTransport": "JSONRPC",
-  "protocolVersion": "0.3.0",
-  "skills": [
-    {
-      "description": "Ask a question to Microsoft 365 Copilot for information about emails, meetings, files, and other M365 data.",
-      "examples": [
-        "What meetings do I have today?",
-        "Summarize my recent emails from my manager",
-        "Find documents about the quarterly report"
-      ],
-      "id": "ask_work_iq",
-      "inputModes": [
-        "text/plain"
-      ],
-      "name": "Ask Work IQ",
-      "outputModes": [
-        "text/plain"
-      ],
-      "tags": [
-        "m365",
-        "copilot",
-        "email",
-        "meetings",
-        "files"
-      ]
-    }
-  ],
-  "supportsAuthenticatedExtendedCard": false,
-  "url": "http://localhost:5100/",
-  "version": "1.0.0"
-}
-```
-
-The agent card document describes the A2A server and provides the following information:
-
-- **Identity**: name, description, and version of the agent
-- **Service Endpoint**: the URL of the agent endpoint as well as the protocol type and version supported by the remote agent 
-- **A2A Capabilities**: the list of supported A2A features like streaming, state transition history, etc.
-- **Authentication**: the authentication requirements to consume the agent
-- **Skills**: what the agent can do for you as well as what kind of media types the agent supports like natural language, typed responses, etc.
-
-Now scroll down in the A2A Inspector page and type the following prompt in the last textbox of the page and select the **Send** command to send the prompt to the target agent. 
-
-```
+```text
 Who am I? What is my role in the company?
 ```
 
-Notice that, since the Work IQ A2A server supports streaming, you will see streaming response at first. Then, when the response is ready you will get back information about who you are in your own Microsoft 365 tenant.
+Work IQ returns an answer grounded in the signed-in user's Microsoft 365
+profile and permissions. Anonymize names, email addresses, account aliases,
+and other personal data before sharing the output.
 
-Now let's try with the following prompt:
+Send a second message in the same session:
 
-```
+```text
 When is my next meeting?
 ```
 
-You will get back detailed information about your next and upcoming meeting, based on your personal agenda in Microsoft 365.
-You can also expand the **Session Details** panel and inspect the transport protocol, the input and output modalities of the conversation and the unique ID of the current conversation context.
+The sample preserves the A2A conversation context and sends both requests to
+the Work IQ gateway at `https://workiq.svc.cloud.microsoft/a2a/`.
+
+For a lower-level view of the JSON-RPC request and the `A2A-Version: 1.0`
+header, run the official raw HTTP sample:
+
+```bash
+cd ../a2a-raw
+# Windows with WAM:
+dotnet run -- --token WAM --appid <APP_ID> --tenant <TENANT_ID>
+
+# Any platform with a pre-obtained Work IQ bearer token:
+dotnet run -- --token <JWT>
+```
+
+For badge evidence, capture the successful A2A terminal exchange and
+anonymize all personal or organization-specific data. Never include access
+tokens in a screenshot.
 
 ## Wrap up
 
-As you can see, you can consume Work IQ as a remote agent from any other agent, as long as you have support for the A2A protocol. This option opens plenty of possibilities like consuming Work IQ from almost any agentic platform, getting access to the intelligent layer of Work IQ from any AI solution.
+As you can see, you can consume Work IQ as a remote agent from any other
+agent that supports the A2A protocol. The supported gateway speaks A2A
+directly, so a local relay server is not required.
 
 ## Where to go next
 

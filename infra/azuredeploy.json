@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.39.26.7824",
-      "templateHash": "3255913851567407658"
+      "templateHash": "3088927871320182099"
     }
   },
   "parameters": {
@@ -90,14 +90,14 @@
     },
     "chatModelName": {
       "type": "string",
-      "defaultValue": "gpt-4o-mini",
+      "defaultValue": "gpt-5-mini",
       "metadata": {
         "description": "Chat model name"
       }
     },
     "chatModelVersion": {
       "type": "string",
-      "defaultValue": "2024-07-18",
+      "defaultValue": "2025-08-07",
       "metadata": {
         "description": "Chat model version"
       }
@@ -128,10 +128,10 @@
       "aiServices": "[format('{0}-ai-{1}', parameters('resourcePrefix'), variables('uniqueSuffix'))]",
       "project": "[format('{0}-project', parameters('resourcePrefix'))]",
       "searchConnection": "iq-series-search-connection",
-      "storage": "[format('{0}stor{1}', parameters('resourcePrefix'), variables('uniqueSuffix'))]",
+      "storage": "[take(format('{0}st{1}', toLower(parameters('resourcePrefix')), variables('uniqueSuffix')), 24)]",
       "blobContainer": "product-manuals",
       "embeddingDeployment": "text-embedding-3-large",
-      "chatDeployment": "gpt-4o-mini"
+      "chatDeployment": "gpt-5-mini"
     },
     "roles": {
       "searchServiceContributor": "7ca78c08-252a-4471-8644-bb5ff32d4ba0",
@@ -140,6 +140,7 @@
       "cognitiveServicesUser": "a97b65f3-24c7-4388-baec-2e87135dc908",
       "cognitiveServicesContributor": "25fbc0a9-bd7c-42a3-aa1a-3b75d497ee68",
       "cognitiveServicesOpenAIUser": "5e0bd9bd-7b93-4f28-af87-19fc36ad61bd",
+      "foundryUser": "53ca6127-db72-4b80-b1b0-d745d6d5456d",
       "storageBlobDataContributor": "ba92f5b4-2d11-453d-a403-e96b0029c9fe"
     }
   },
@@ -463,6 +464,49 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
+      "scope": "[format('Microsoft.CognitiveServices/accounts/{0}', variables('names').aiServices)]",
+      "name": "[guid(resourceGroup().id, variables('names').aiServices, parameters('userObjectId'), variables('roles').foundryUser)]",
+      "properties": {
+        "principalId": "[parameters('userObjectId')]",
+        "principalType": "User",
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roles').foundryUser)]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('names').aiServices)]"
+      ]
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope": "[format('Microsoft.CognitiveServices/accounts/{0}/projects/{1}', variables('names').aiServices, variables('names').project)]",
+      "name": "[guid(resourceGroup().id, variables('names').project, variables('roles').foundryUser, 'project-identity')]",
+      "properties": {
+        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', variables('names').aiServices, variables('names').project), '2025-06-01', 'full').identity.principalId]",
+        "principalType": "ServicePrincipal",
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roles').foundryUser)]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts/projects', variables('names').aiServices, variables('names').project)]"
+      ]
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope": "[format('Microsoft.Search/searchServices/{0}', variables('names').search)]",
+      "name": "[guid(resourceGroup().id, variables('names').search, variables('roles').searchIndexDataReader, 'project-identity')]",
+      "properties": {
+        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', variables('names').aiServices, variables('names').project), '2025-06-01', 'full').identity.principalId]",
+        "principalType": "ServicePrincipal",
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roles').searchIndexDataReader)]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts/projects', variables('names').aiServices, variables('names').project)]",
+        "[resourceId('Microsoft.Search/searchServices', variables('names').search)]"
+      ]
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
       "scope": "[format('Microsoft.Storage/storageAccounts/{0}', variables('names').storage)]",
       "name": "[guid(resourceGroup().id, variables('names').storage, parameters('userObjectId'), variables('roles').storageBlobDataContributor)]",
       "properties": {
@@ -596,13 +640,6 @@
       },
       "value": "[format('https://{0}.search.windows.net', variables('names').search)]"
     },
-    "searchApiKey": {
-      "type": "string",
-      "metadata": {
-        "description": "AI Search admin API key"
-      },
-      "value": "[listAdminKeys(resourceId('Microsoft.Search/searchServices', variables('names').search), '2023-11-01').primaryKey]"
-    },
     "openAiEndpoint": {
       "type": "string",
       "metadata": {
@@ -666,12 +703,12 @@
       },
       "value": "[variables('names').searchConnection]"
     },
-    "blobConnectionString": {
+    "storageAccountName": {
       "type": "string",
       "metadata": {
-        "description": "Blob Storage connection string (use as BLOB_CONNECTION_STRING in .env)"
+        "description": "Blob Storage account name"
       },
-      "value": "[format('DefaultEndpointsProtocol=https;AccountName={0};AccountKey={1};EndpointSuffix={2}', variables('names').storage, listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('names').storage), '2023-05-01').keys[0].value, environment().suffixes.storage)]"
+      "value": "[variables('names').storage]"
     },
     "blobContainerName": {
       "type": "string",

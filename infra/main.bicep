@@ -40,10 +40,10 @@ param embeddingModelVersion string = '1'
 param embeddingModelCapacity int = 30
 
 @description('Chat model name')
-param chatModelName string = 'gpt-4o-mini'
+param chatModelName string = 'gpt-5-mini'
 
 @description('Chat model version')
-param chatModelVersion string = '2024-07-18'
+param chatModelVersion string = '2025-08-07'
 
 @description('Chat model capacity (1K TPM per unit)')
 @minValue(1)
@@ -65,7 +65,7 @@ var names = {
   storage: take('${toLower(resourcePrefix)}st${uniqueSuffix}', 24)
   blobContainer: 'product-manuals'
   embeddingDeployment: 'text-embedding-3-large'
-  chatDeployment: 'gpt-4o-mini'
+  chatDeployment: 'gpt-5-mini'
 }
 
 // -----------------------------------------------
@@ -79,6 +79,7 @@ var roles = {
   cognitiveServicesUser: 'a97b65f3-24c7-4388-baec-2e87135dc908'
   cognitiveServicesContributor: '25fbc0a9-bd7c-42a3-aa1a-3b75d497ee68'
   cognitiveServicesOpenAIUser: '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+  foundryUser: '53ca6127-db72-4b80-b1b0-d745d6d5456d'
   storageBlobDataContributor: 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 }
 
@@ -393,6 +394,39 @@ resource userRole_aiServicesContributor 'Microsoft.Authorization/roleAssignments
   }
 }
 
+// Foundry User (data-plane access for creating and testing agents)
+resource userRole_foundryUser 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(resourceGroup().id, aiServices.name, userObjectId, roles.foundryUser)
+  scope: aiServices
+  properties: {
+    principalId: userObjectId
+    principalType: 'User'
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.foundryUser)
+  }
+}
+
+// Foundry User for the project's managed identity
+resource projectRole_foundryUser 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(resourceGroup().id, project.name, roles.foundryUser, 'project-identity')
+  scope: project
+  properties: {
+    principalId: project.identity.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.foundryUser)
+  }
+}
+
+// Allow the project's managed identity to query knowledge bases over MCP
+resource projectRole_searchIndexReader 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(resourceGroup().id, searchService.name, roles.searchIndexDataReader, 'project-identity')
+  scope: searchService
+  properties: {
+    principalId: project.identity.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.searchIndexDataReader)
+  }
+}
+
 // Storage Blob Data Contributor (for Episode 2 — upload docs to blob)
 resource userRole_storageBlobContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(resourceGroup().id, storageAccount.name, userObjectId, roles.storageBlobDataContributor)
@@ -424,7 +458,7 @@ resource seedRole_searchContributor 'Microsoft.Authorization/roleAssignments@202
   name: guid(resourceGroup().id, searchService.name, 'seed', roles.searchServiceContributor)
   scope: searchService
   properties: {
-    principalId: seedData ? seedIdentity.properties.principalId : ''
+    principalId: seedData ? seedIdentity!.properties.principalId : ''
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.searchServiceContributor)
   }
@@ -435,7 +469,7 @@ resource seedRole_searchIndexContributor 'Microsoft.Authorization/roleAssignment
   name: guid(resourceGroup().id, searchService.name, 'seed', roles.searchIndexDataContributor)
   scope: searchService
   properties: {
-    principalId: seedData ? seedIdentity.properties.principalId : ''
+    principalId: seedData ? seedIdentity!.properties.principalId : ''
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.searchIndexDataContributor)
   }
@@ -447,7 +481,7 @@ resource seedRole_cogServicesUser 'Microsoft.Authorization/roleAssignments@2022-
   name: guid(resourceGroup().id, openAiService.name, 'seed', roles.cognitiveServicesUser)
   scope: openAiService
   properties: {
-    principalId: seedData ? seedIdentity.properties.principalId : ''
+    principalId: seedData ? seedIdentity!.properties.principalId : ''
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.cognitiveServicesUser)
   }
@@ -495,9 +529,6 @@ resource seedDataScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = if 
 @description('AI Search endpoint')
 output searchEndpoint string = 'https://${searchService.name}.search.windows.net'
 
-@description('AI Search admin API key')
-output searchApiKey string = searchService.listAdminKeys().primaryKey
-
 @description('Azure OpenAI endpoint')
 output openAiEndpoint string = openAiService.properties.endpoint
 
@@ -525,8 +556,8 @@ output foundryProjectEndpoint string = 'https://${names.aiServices}.services.ai.
 @description('AI Search connection name (use in .env)')
 output searchConnectionName string = searchConnection.name
 
-@description('Blob Storage connection string (use as BLOB_CONNECTION_STRING in .env)')
-output blobConnectionString string = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
+@description('Blob Storage account name')
+output storageAccountName string = storageAccount.name
 
 @description('Blob container name (use as BLOB_CONTAINER_NAME in .env)')
 output blobContainerName string = blobContainer.name

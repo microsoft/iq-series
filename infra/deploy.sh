@@ -119,6 +119,13 @@ EMBEDDING_DEPLOYMENT=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; 
 CHAT_DEPLOYMENT=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['chatDeploymentName']['value'])")
 FOUNDRY_PROJECT_ENDPOINT=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['foundryProjectEndpoint']['value'])")
 SEARCH_CONNECTION_NAME=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['searchConnectionName']['value'])")
+STORAGE_ACCOUNT_NAME=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['storageAccountName']['value'])")
+BLOB_CONTAINER_NAME=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['blobContainerName']['value'])")
+BLOB_CONNECTION_STRING=$(az storage account show-connection-string \
+  --name "$STORAGE_ACCOUNT_NAME" \
+  --resource-group "$RESOURCE_GROUP" \
+  --query connectionString \
+  --output tsv)
 
 # Create .env file
 ENV_FILE="$SCRIPT_DIR/../.env"
@@ -130,11 +137,13 @@ SEARCH_ENDPOINT=$SEARCH_ENDPOINT
 AOAI_ENDPOINT=$AOAI_ENDPOINT
 AOAI_EMBEDDING_MODEL=text-embedding-3-large
 AOAI_EMBEDDING_DEPLOYMENT=$EMBEDDING_DEPLOYMENT
-AOAI_GPT_MODEL=gpt-4o-mini
+AOAI_GPT_MODEL=gpt-5-mini
 AOAI_GPT_DEPLOYMENT=$CHAT_DEPLOYMENT
 FOUNDRY_PROJECT_ENDPOINT=$FOUNDRY_PROJECT_ENDPOINT
-FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
+FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-5-mini
 AZURE_AI_SEARCH_CONNECTION_NAME=$SEARCH_CONNECTION_NAME
+BLOB_CONNECTION_STRING="$BLOB_CONNECTION_STRING"
+BLOB_CONTAINER_NAME=$BLOB_CONTAINER_NAME
 EOF
 
 echo ""
