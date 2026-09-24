@@ -89,6 +89,13 @@ $embeddingDeployment = $deploymentOutput.properties.outputs.embeddingDeploymentN
 $chatDeployment = $deploymentOutput.properties.outputs.chatDeploymentName.value
 $foundryProjectEndpoint = $deploymentOutput.properties.outputs.foundryProjectEndpoint.value
 $searchConnectionName = $deploymentOutput.properties.outputs.searchConnectionName.value
+$storageAccountName = $deploymentOutput.properties.outputs.storageAccountName.value
+$blobContainerName = $deploymentOutput.properties.outputs.blobContainerName.value
+$blobConnectionString = az storage account show-connection-string `
+    --name $storageAccountName `
+    --resource-group $ResourceGroupName `
+    --query connectionString `
+    --output tsv
 
 # Create .env file
 $envFile = Join-Path $scriptDir "../.env"
@@ -100,11 +107,13 @@ SEARCH_ENDPOINT=$searchEndpoint
 AOAI_ENDPOINT=$aoaiEndpoint
 AOAI_EMBEDDING_MODEL=text-embedding-3-large
 AOAI_EMBEDDING_DEPLOYMENT=$embeddingDeployment
-AOAI_GPT_MODEL=gpt-4o-mini
+AOAI_GPT_MODEL=gpt-5-mini
 AOAI_GPT_DEPLOYMENT=$chatDeployment
 FOUNDRY_PROJECT_ENDPOINT=$foundryProjectEndpoint
-FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
+FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-5-mini
 AZURE_AI_SEARCH_CONNECTION_NAME=$searchConnectionName
+BLOB_CONNECTION_STRING="$blobConnectionString"
+BLOB_CONTAINER_NAME=$blobContainerName
 "@
 
 Set-Content -Path $envFile -Value $envContent

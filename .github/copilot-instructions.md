@@ -19,7 +19,7 @@ This repository is **The IQ Series** — a hands-on learning series for Microsof
 ## Key Azure Services
 
 - **Azure AI Search** — Provides the search index and agentic retrieval capabilities
-- **Azure OpenAI** — Hosts embedding (`text-embedding-3-large`) and chat (`gpt-4o-mini`) model deployments
+- **Azure OpenAI** — Hosts embedding (`text-embedding-3-large`) and chat (`gpt-5-mini`) model deployments
 - **Azure AI Services (Foundry)** — The parent resource for Foundry projects
 - **Foundry Project** — Hosts agents and connections
 - **RBAC Roles** — Search Service Contributor, Search Index Data Contributor, Search Index Data Reader, Cognitive Services User

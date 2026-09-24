@@ -45,13 +45,24 @@ SEARCH_ENDPOINT=https://<your-search-service>.search.windows.net
 AOAI_ENDPOINT=https://<your-openai-resource>.openai.azure.com
 AOAI_EMBEDDING_MODEL=text-embedding-3-large
 AOAI_EMBEDDING_DEPLOYMENT=text-embedding-3-large
-AOAI_GPT_MODEL=gpt-4o-mini
-AOAI_GPT_DEPLOYMENT=gpt-4o-mini
+AOAI_GPT_MODEL=gpt-5-mini
+AOAI_GPT_DEPLOYMENT=gpt-5-mini
 BLOB_CONNECTION_STRING=<your-blob-connection-string>
 BLOB_CONTAINER_NAME=<your-container-name>
 ```
 
-**Where to find these values:** All values are available in the deployment **Outputs** tab in the Azure portal. Copy `searchEndpoint`, `openAiEndpoint`, `blobConnectionString`, and `blobContainerName` directly from the outputs.
+**Where to find these values:** Non-secret values are available in the
+deployment **Outputs** tab in the Azure portal. Copy `searchEndpoint`,
+`openAiEndpoint`, `storageAccountName`, and `blobContainerName`. Retrieve the
+connection string locally so it is not stored in the ARM deployment history:
+
+```bash
+az storage account show-connection-string \
+  --name <storageAccountName> \
+  --resource-group <resource-group-name> \
+  --query connectionString \
+  --output tsv
+```
 
 For CLI deployment and cleanup instructions, see the [Infrastructure Guide](../../../infra/README.md).
 

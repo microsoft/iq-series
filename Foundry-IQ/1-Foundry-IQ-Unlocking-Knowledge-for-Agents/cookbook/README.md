@@ -44,10 +44,10 @@ SEARCH_ENDPOINT=https://<your-search-service>.search.windows.net
 AOAI_ENDPOINT=https://<your-openai-resource>.openai.azure.com
 AOAI_EMBEDDING_MODEL=text-embedding-3-large
 AOAI_EMBEDDING_DEPLOYMENT=text-embedding-3-large
-AOAI_GPT_MODEL=gpt-4o-mini
-AOAI_GPT_DEPLOYMENT=gpt-4o-mini
+AOAI_GPT_MODEL=gpt-5-mini
+AOAI_GPT_DEPLOYMENT=gpt-5-mini
 FOUNDRY_PROJECT_ENDPOINT=https://<your-ai-services>.services.ai.azure.com/api/projects/<your-project>
-FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
+FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-5-mini
 AZURE_AI_SEARCH_CONNECTION_NAME=iq-series-search-connection
 FOUNDRY_PROJECT_RESOURCE_ID=/subscriptions/<sub>/resourceGroups/<rg>/providers/Microsoft.MachineLearningServices/workspaces/<workspace>/projects/<project>
 ```
