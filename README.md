@@ -9,6 +9,7 @@ Learn Microsoft IQ with The IQ Series! Microsoft IQ is Microsoft's unified intel
 - **Foundry IQ**: A managed knowledge layer for enterprise data; connecting structured and unstructured data across Azure, SharePoint, OneLake, and the web so agents can access permission-aware knowledge.
 - **Work IQ**: Your organization’s intelligence, unlocked for every agent understanding context, relationships, and work patterns so agents can be faster, more accurate, and more secure.
 - **Fabric IQ**: Unify business semantics across data, models, and systems to power intelligent agents and decisions grounded in a live, holistic view of the business.
+- **Web IQ**: Live grounding in the public web; so agents can answer time-sensitive questions with current, cited information beyond your enterprise data.
 
 Together, these IQs enable AI agents to reason, retrieve, and act with deep business context going beyond traditional RAG for true enterprise intelligence.
 
@@ -31,7 +32,7 @@ Together, these IQs enable AI agents to reason, retrieve, and act with deep busi
 | [Work IQ: A2A for Context‑Aware, Agentic Experiences](./Work-IQ/2-Work-IQ-A2A-for-Context‑Aware-Agentic-Experiences/README.md)                  | Explores the A2A protocol, agent discovery patterns, and practical prototyping for context-aware agentic workflows. | [Watch Now 🎥](https://aka.ms/work-iq-series/episode2) | [Cookbook](./Work-IQ/2-Work-IQ-A2A-for-Context‑Aware-Agentic-Experiences/cookbook/README.md) |
 | [Work IQ: Tooling with MCP & Copilot CLI](./Work-IQ/3-Work-IQ-Tooling-with-MCP-and-Copilot-CLI/README.md)                  | Explores the unified MCP server of Work IQ and how to use it in Work IQ CLI and GitHub Copilot CLI. | [Watch Now 🎥](https://aka.ms/work-iq-series/episode3) | [Cookbook](./Work-IQ/3-Work-IQ-Tooling-with-MCP-and-Copilot-CLI/cookbook/README.md) |
 | Fabric IQ                                                                                                                            | Coming soon!                                                                       |                 |                                                                                     |
-| Web IQ                                                                                                                               | Coming soon!                                                                       |                 |                                                                                     |
+| [Web IQ: Grounding Agents with Real-Time Web Search](./Web-IQ/1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/README.md)        | Add the web search tool to a Foundry agent and ground responses with live, cited web results | Coming soon 🎥 | [Cookbook](./Web-IQ/1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/) |
 
 ### Episode Format
 
