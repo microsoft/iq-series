@@ -18,7 +18,12 @@ Web IQ supports two authentication modes:
 
 ## 🔧 Setup
 
-Create a `.env` file **in this folder** (`1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/.env`):
+Copy [`.env.sample`](./.env.sample) to `.env` **in this folder** and add your API key:
+
+```bash
+cp .env.sample .env          # macOS/Linux
+Copy-Item .env.sample .env   # Windows PowerShell
+```
 
 ```env
 WEBIQ_API_KEY=<your-web-iq-api-key>
@@ -38,7 +43,7 @@ The [**Web IQ Cookbook**](./web-iq-cookbook.ipynb) walks you through grounding a
 ### Quick Start
 
 1. Install dependencies: `pip install -U requests python-dotenv`
-2. Create a `.env` file with your API key (see above)
+2. Copy `.env.sample` to `.env` and add your API key (see above)
 3. Open `web-iq-cookbook.ipynb` in VS Code and run the cells
 
 ### Learn with Copilot
