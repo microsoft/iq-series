@@ -6,13 +6,13 @@
 
 ## 🎯 What You'll Learn
 
-Foundry IQ and Fabric IQ ground agents in curated, permission-aware organizational knowledge. But some questions can only be answered with information that changes by the hour — today's news, current prices, the latest product release. **Web IQ** closes that gap by giving Foundry agents a built-in **web search tool** that:
+Foundry IQ and Fabric IQ ground agents in curated, permission-aware organizational knowledge. But some questions can only be answered with information that changes by the hour — today's news, current prices, the latest product release. **Web IQ** closes that gap with a dedicated, agent-native grounding API that:
 
-- Retrieves fresh, public web content before the model generates a response
-- Returns answers with inline **citations** linking back to source pages
-- Requires no separate retrieval pipeline, index, or Bing resource to get started
+- Returns ranked, citation-ready context across **web, news, images, and video**
+- Is designed for direct injection into an LLM's context window — no scraping or post-processing required
+- Is available over **REST**, an **MCP server** (JSON-RPC 2.0), and official SDKs — model-agnostic, with no inference lock-in
 
-In this episode, you'll add the web search tool to a Foundry agent, ask it time-sensitive questions, and inspect how it cites its sources.
+In this episode, you'll call the Web IQ REST API directly, ground an agent's answer in live web and news results, and inspect the citations returned with each response.
 
 ## 📓 Try the Cookbook
 
@@ -20,9 +20,11 @@ Ready to get hands-on? Head to the [Episode 1 Cookbook](./cookbook/) for prerequ
 
 ## 🔗 Learn More
 
-- 📖 [Web search tool (Microsoft Foundry Agent Service)](https://learn.microsoft.com/azure/ai-foundry/agents/how-to/tools/web-search)
-- 📖 [Grounding with Bing Search](https://learn.microsoft.com/azure/ai-foundry/agents/how-to/tools/bing-grounding)
-- 📖 [Toolbox overview](https://learn.microsoft.com/azure/ai-foundry/agents/concepts/toolbox-overview)
+- 📖 [Microsoft Web IQ documentation](https://webiq.microsoft.ai/documentation/overview/)
+- 📖 [Web IQ Quick Start](https://webiq.microsoft.ai/documentation/quick-start/?view=md)
+- 📖 [Web IQ API Reference](https://webiq.microsoft.ai/documentation/openapi.json)
+- 📖 [Web IQ MCP Server](https://webiq.microsoft.ai/documentation/mcp/?view=md)
+- 📖 [How Web IQ differs from Grounding with Bing](https://webiq.microsoft.ai/documentation/faq/?view=md)
 
 ## 💬 Community
 

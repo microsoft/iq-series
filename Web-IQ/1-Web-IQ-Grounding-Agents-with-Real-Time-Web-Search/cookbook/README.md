@@ -4,51 +4,54 @@ This folder contains the hands-on cookbook for Episode 1 of The Web IQ Series.
 
 ## 📋 Prerequisites
 
-- **Azure subscription** with a [basic or standard Foundry Agent Service environment](https://learn.microsoft.com/azure/ai-foundry/agents/environment-setup)
-- **Foundry User** role on the Foundry project to create and run agents
+- **Web IQ access** — Web IQ is currently in **limited access** for select enterprise customers. Request access and generate an API key at the [Microsoft Web IQ Portal](https://webiq.microsoft.ai/profiles/)
 - **Python 3.10+** installed
-- A **model deployment** that supports the web search tool (e.g., `gpt-5-mini`) — `gpt-4o-mini` and GPT-5 reasoning models are **not** supported for Grounding with Bing Search
-- Azure CLI installed and signed in (`az login`), used by `DefaultAzureCredential`
 
-> **💡 No new infrastructure needed.** Unlike Foundry IQ, the web search tool doesn't require an Azure AI Search index, a knowledge source, or a knowledge base. If you already deployed a Foundry project for the Foundry IQ episodes, reuse it here.
+> **💡 No Azure subscription or infrastructure needed.** Unlike Foundry IQ, Web IQ is a standalone, hosted REST/MCP service — there's no index, knowledge base, or Foundry project to provision. You only need an API key.
+
+## 🔑 Authentication
+
+Web IQ supports two authentication modes:
+
+1. **API key** (used in this cookbook) — generate one in the [Web IQ Portal](https://webiq.microsoft.ai/profiles/) under **Profile Management**, then pass it in the `x-apikey` header.
+2. **Entra ID OAuth 2.0 (client credentials)** — bind an app registration's Application (Client) ID in the portal, then acquire a token with scope `https://api.microsoft.ai/.default` and pass it as `Authorization: Bearer <token>`.
 
 ## 🔧 Setup
 
 Create a `.env` file **in this folder** (`1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/.env`):
 
 ```env
-FOUNDRY_PROJECT_ENDPOINT=https://<your-ai-services>.services.ai.azure.com/api/projects/<your-project>
-FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-5-mini
+WEBIQ_API_KEY=<your-web-iq-api-key>
+WEBIQ_BASE_URL=https://api.microsoft.ai/v3
 ```
-
-**Where to find these values:** In [Microsoft Foundry](https://ai.azure.com) → your project → **Overview**, copy the **Project endpoint**. `FOUNDRY_MODEL_DEPLOYMENT_NAME` is the name of a deployed chat model that supports the web search tool.
 
 ## 📓 Cookbook Notebook
 
 The [**Web IQ Cookbook**](./web-iq-cookbook.ipynb) walks you through grounding an agent in the live web, step by step:
 
-1. Creating a Foundry agent with the `WebSearchTool` attached
-2. Asking the agent a time-sensitive question and streaming the response
-3. Inspecting the inline URL citations returned alongside the answer
-4. Restricting the web search to a location, and cleaning up the agent afterward
+1. Calling the **Web Search** endpoint (`POST /search/web`) and inspecting grounding content
+2. Calling the **News Search** endpoint (`POST /search/news`) for the last 14 days of coverage
+3. Calling the **Images Search** endpoint (`POST /search/images`)
+4. Handling errors and rate limits per the documented error schema
+5. Configuring the **Web IQ MCP server** for use in VS Code / GitHub Copilot
 
 ### Quick Start
 
-1. Install dependencies: `pip install -U azure-ai-projects azure-identity python-dotenv`
-2. Sign in to Azure: run `az login` in a terminal
-3. Create a `.env` file with your endpoint values (see above)
-4. Open `web-iq-cookbook.ipynb` in VS Code and run the cells
+1. Install dependencies: `pip install -U requests python-dotenv`
+2. Create a `.env` file with your API key (see above)
+3. Open `web-iq-cookbook.ipynb` in VS Code and run the cells
 
 ### Learn with Copilot
 
 Open any cookbook notebook and use Copilot Chat to help you learn and experiment:
 
 - *"Explain what this notebook does step by step"*
-- *"What's the difference between the web search tool and Grounding with Bing Search?"*
-- *"Help me restrict this agent's web search to a specific country"*
+- *"What's the difference between Web Search and the Auto (Beta) endpoint?"*
+- *"Help me add a `site:` filter to this web search query"*
 
 ## Additional Resources
 
 - [Episode 1 README](../README.md)
-- [Web search tool documentation](https://learn.microsoft.com/azure/ai-foundry/agents/how-to/tools/web-search)
-- [Grounding with Bing Search terms of use](https://www.microsoft.com/en-us/bing/apis/grounding-legal)
+- [Web IQ documentation](https://webiq.microsoft.ai/documentation/overview/)
+- [Web IQ error handling reference](https://webiq.microsoft.ai/documentation/error-handling/?view=md)
+- [Web IQ support](https://aka.ms/microsoft-webiq-support)
