@@ -1,0 +1,86 @@
+name: 'Fabric IQ Badge Request'
+description: "Submit this issue to acknowledge completion of the Fabric IQ cookbook."
+title: "<First Name Last Name> Fabric IQ Badge Request"
+labels:
+  - fabric-iq-badge
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### IMPORTANT: We issue badges from the [Global AI Community](https://globalai.community). Please ensure you have [signed up for an account](https://globalai.community/auth/login) to view your badge. After you submit your issue, please submit this [form](https://aka.ms/iq-series/badge-form) to initiate your badge request. This step is required as we cannot issue a badge without it. Failure to fill out the required screenshots, inputs or badge form will result in the issue being closed.
+
+  - type: checkboxes
+    attributes:
+      label: Curriculum Completion Validation
+      description: Please check this to confirm that you have completed the Fabric IQ cookbook.
+      options:
+        - label: I verify that I have completed the Fabric IQ cookbook end-to-end.
+          required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Completion proof
+
+        Fork the repo, run all notebook cells, and commit the notebook with outputs saved. Paste the direct link to your forked notebook. Screenshots must show your final cell output with your GitHub username or Azure resource name visible.
+
+  - type: checkboxes
+    attributes:
+      label: "Ontology gen 2 to a grounded knowledge base: solution verification"
+      description: Please upload a screenshot of your final notebook output into the field below.
+      options:
+        - label: I verify that I have uploaded a screenshot of my final notebook output with my GitHub username or Azure resource name shown into the field below.
+          required: true
+
+  - type: textarea
+    id: fork
+    attributes:
+      label: "Fork URL"
+      description: "Paste the link to your forked notebook with committed cell outputs."
+      placeholder: "https://github.com/your-username/iq-series/blob/main/Fabric-IQ/cookbook/..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: "Final output screenshot"
+      placeholder: "Drag and drop screenshot here"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "---"
+
+  - type: textarea
+    id: technical_reflection
+    attributes:
+      label: Episode Insights & Key Takeaways
+      description: |
+        To verify your engagement with the series [video content](https://aka.ms/iq-series/episodes), please provide one brief, specific technical takeaway or "aha!" moment from the Fabric IQ episode.
+      placeholder: "[Your insight]"
+    validations:
+      required: true
+
+  - type: textarea
+    id: feedback
+    attributes:
+      label: Challenges or feedback
+      description: "Any blockers or steps that need clearer documentation? This helps us improve the cookbooks."
+      placeholder: "Optional"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "---"
+
+  - type: checkboxes
+    attributes:
+      label: Badge form confirmation
+      description: "In order to receive your badge, please fill out the [Fabric IQ badge form](https://aka.ms/iq-series/badge-form). If you do not submit this form, you will not be eligible to receive a badge."
+      options:
+        - label: I verify that I have completed the Fabric IQ badge form.
+          required: true
