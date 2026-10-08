@@ -59,8 +59,8 @@ body:
     attributes:
       label: Episode Insights & Key Takeaways
       description: |
-        To verify your engagement with the series [video content](https://aka.ms/iq-series/playlist), please provide one brief, specific technical takeaway or "aha!" moment from the Web IQ episode.
-      placeholder: "[Your insight]"
+        To verify your engagement with the series, please watch the related episodes in the [IQ Series playlist](https://aka.ms/iq-series/playlist) and provide one brief, specific technical takeaway or "aha!" moment from each episode.
+      placeholder: "Episode: [Your insight]"
     validations:
       required: true
 
