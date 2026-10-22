@@ -20,7 +20,7 @@ This folder contains the Web IQ episodes of The Microsoft IQ Series, including h
 |---|---|
 | ⚡ **Speed** | **164 ms P95** latency — about 2.5× faster than today's best alternative — so multi-step agent chains stay responsive |
 | 🎯 **Quality** | Highest grounding satisfaction, validated against benchmarks including DeepSearchQA, grounding satisfaction, and freshness. Results are ranked for relevance, freshness, and authority — not just a list of links |
-| 🪙 **Efficiency** | Passage-level retrieval surfaces only the most relevant text, so you send **fewer tokens per query** and lower the cost of every call |
+| 🪙&nbsp;**Efficiency** | Passage-level retrieval surfaces only the most relevant text, so you send **fewer tokens per query** and lower the cost of every call |
 | 📚 **Content** | Combines **licensed sources, structured data, and the open web** — not SERP scraping |
 | 🌍 **Global** | Coverage across **100+ languages and markets** |
 | 🔌 **Open** | REST, **MCP** (JSON-RPC 2.0), and SDKs — model-agnostic, with no inference lock-in |
@@ -29,12 +29,12 @@ This folder contains the Web IQ episodes of The Microsoft IQ Series, including h
 
 | API | Endpoint | What it returns |
 |---|---|---|
-| **Web Search** | `POST /search/web` | Ranked web pages as `passage`, `text`, `html`, or `markdown`, with freshness signals (`crawledAt`, `lastUpdatedAt`). Supports `site:` operators, language/region, and location |
-| **News Search** | `POST /search/news` | Trusted news from the **last 14 days**, with publisher, snippet, and thumbnail |
-| **Images Search** | `POST /search/images` | Images with generated captions and host pages; filter by aspect ratio, size, color, and watermark |
-| **Videos Search** | `POST /search/videos` | Videos with AI summaries, embeddable players, and **moments** that deep-link to the most relevant segment |
-| **Browse** | `POST /browse` | Extracted content from a specific URL, with **on-demand live crawl** for pages not yet indexed |
-| **Auto (Beta)** | `POST /auto` | Typed evidence (text, images, videos, weather, time zones, and more) with **result-scoped citations** in a single call |
+| **Web Search** | <code>POST&nbsp;/search/web</code> | Ranked passages with freshness signals (`crawledAt`, `lastUpdatedAt`). Full-document formats (`text`, `html`, `markdown`) require full-document access. Supports `site:` operators, language/region, and location |
+| **News Search** | <code>POST&nbsp;/search/news</code> | Trusted news from the **last 14 days**, with publisher, content, and thumbnail |
+| **Images Search** | <code>POST&nbsp;/search/images</code> | Images with generated captions and host pages; filter by aspect ratio, size, color, and watermark |
+| **Videos Search** | <code>POST&nbsp;/search/videos</code> | Videos with AI summaries, embeddable players, and optional **moments** that deep-link to the most relevant segment |
+| **Browse** | <code>POST&nbsp;/browse</code> | Extracted content from a specific URL, with **on-demand live crawl** for pages not yet indexed. Requires full-document access |
+| **Auto (Beta)** | <code>POST&nbsp;/auto</code> | Typed evidence (text, images, videos, weather, time zones, and more) with **result-scoped citations** in a single call |
 
 All endpoints live at `https://api.microsoft.ai/v3/`, share one error schema, and are also available as tools on the **Web IQ MCP server** at `https://api.microsoft.ai/v3/mcp`.
 
@@ -55,12 +55,10 @@ All endpoints live at `https://api.microsoft.ai/v3/`, share one error schema, an
 
 ### 1. Prerequisites
 
-- **Web IQ access** — Web IQ is currently in **limited access** for select enterprise customers building AI agents and applications at scale, prioritized for organizations working with Microsoft account teams. Request access at [webiq.microsoft.ai](https://webiq.microsoft.ai/).
-- **An API key** — In the [Web IQ Portal → Profile Management](https://webiq.microsoft.ai/profiles/), select **Create API Key**. The same page shows your quota and which services your profile can call.
+- **A paid Azure subscription and a Web IQ resource** — Passage-only access is publicly available. [Create a Web IQ billing resource in the Azure portal](https://learn.microsoft.com/en-us/web-iq/get-started/deploy-azure-portal), then connect it in the [Web IQ portal](https://webiq.microsoft.ai/) to get an App ID. Azure credits cannot be used for Web IQ.
+- **An API key** — In the [Web IQ Portal → Profile Management](https://webiq.microsoft.ai/profiles/), select **Create API Key**. The same page shows your per-second quota (default: **15 QPS**) and which services your profile can call.
 - **Python 3.10+** installed
-- No Azure subscription or infrastructure deployment is required — Web IQ is a standalone, hosted service. *(The cookbook's optional grounded-answer step can use a model in a Microsoft Foundry project.)*
-
-> 💡 **Can't verify your invitation code?** The invitation is usually tied to a different address than the one you sign in with. Open [portal.azure.com](https://portal.azure.com), check the address shown under your name in the top-right corner, and reply to your invitation email with that address.
+- *(Optional)* **Full-document access** for the format comparison and Browse examples. See [Passages and content formats](https://learn.microsoft.com/en-us/web-iq/concepts/content-formats) for defaults, limits, and how to request access. The grounded-answer step can optionally use a model in a Microsoft Foundry project.
 
 ### 2. Run the Cookbook
 

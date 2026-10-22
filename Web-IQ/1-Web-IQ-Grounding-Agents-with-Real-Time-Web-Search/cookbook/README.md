@@ -4,12 +4,13 @@ This folder contains the hands-on cookbook for Episode 1 of The Web IQ Series.
 
 ## 📋 Prerequisites
 
-- **Web IQ access** — Web IQ is currently in **limited access** for select enterprise customers building AI agents and applications at scale. Request access at [webiq.microsoft.ai](https://webiq.microsoft.ai/).
-- **A Web IQ API key** — In the [Web IQ Portal → Profile Management](https://webiq.microsoft.ai/profiles/), open the **Authentication** tab and select **Create API Key**. The **Profile** tab shows your quota (for example, `60 QPM`) and which services (Web, Videos, Browse, News, Images) your key can call.
+- **A paid Azure subscription and a Web IQ resource** — Passage-only access is publicly available. [Create a Web IQ billing resource in the Azure portal](https://learn.microsoft.com/en-us/web-iq/get-started/deploy-azure-portal), then connect it in the [Web IQ portal](https://webiq.microsoft.ai/) to get an App ID. Azure credits cannot be used for Web IQ.
+- **A Web IQ API key** — In the [Web IQ Portal → Profile Management](https://webiq.microsoft.ai/profiles/), open the **Authentication** tab and select **Create API Key**. The **Profile** tab shows your per-second quota (default: `15 QPS`) and which services your key can call.
 - **Python 3.10+** installed
+- *(Optional — Steps 2 and 7)* **Full-document access** for comparing formats and using Browse. Set `FULL_DOCUMENT_ACCESS = True` in the notebook's authentication code cell only after access is enabled for your profile. Otherwise, these examples are skipped explicitly. See [Passages and content formats](https://learn.microsoft.com/en-us/web-iq/concepts/content-formats).
 - *(Optional — Step 9 only)* A **Microsoft Foundry project** with a chat model deployment, plus `az login` so `DefaultAzureCredential` can authenticate
 
-> **💡 No Azure infrastructure needed for the core cookbook.** Web IQ is a standalone, hosted service — there's no index, knowledge base, or deployment to provision. Steps 1–8 and 10–12 need only your API key. Step 9 uses a Microsoft Foundry model if you've configured one, and otherwise prints the grounded prompt so you can use any model.
+> **💡 A Web IQ billing resource is required.** You don't need a search index or knowledge base. After provisioning the billing resource and obtaining your API key, run the examples allowed by your profile. Step 9 uses a Microsoft Foundry model if you've configured one, and otherwise prints the grounded prompt so you can use any model.
 
 ## 🔑 Authentication
 
@@ -47,12 +48,12 @@ The [**Web IQ Cookbook**](./web-iq-cookbook.ipynb) walks you through every Web I
 | Step | Topic | API |
 |---|---|---|
 | 1 | Web Search and the response anatomy — content, freshness, provenance, query signals | `POST /search/web` |
-| 2 | Content formats (`passage`, `text`, `markdown`, `html`) and token budgets with `maxLength` | `POST /search/web` |
+| 2 | Passage token budgets with `maxLength`; optional full-document format comparison | `POST /search/web` |
 | 3 | Targeting with `site:`, language/region, and location | `POST /search/web` |
-| 4 | News Search — last 14 days, with publisher and snippet | `POST /search/news` |
+| 4 | News Search — last 14 days, with publisher and content | `POST /search/news` |
 | 5 | Images Search with aspect ratio, size, and watermark filters | `POST /search/images` |
 | 6 | Videos Search with freshness filters and moments | `POST /search/videos` |
-| 7 | Browse a specific URL, with live crawl and `202` polling | `POST /browse` |
+| 7 | Browse a specific URL, with live crawl and `202` polling *(requires full-document access)* | `POST /browse` |
 | 8 | Auto (Beta) — typed evidence with result-scoped citations | `POST /auto` |
 | 9 | Ground a model's answer with numbered citations | Web IQ + Microsoft Foundry *(optional)* |
 | 10 | Errors, rate limits, and retries | All |
@@ -71,12 +72,11 @@ The [**Web IQ Cookbook**](./web-iq-cookbook.ipynb) walks you through every Web I
 |---|---|
 | `401 AuthInvalidApiKey` | The key is wrong or missing. Check `WEBIQ_API_KEY` in `.env`, then restart the kernel so `load_dotenv` reloads it |
 | `403` on one endpoint only | Your profile isn't allowed to call that service. Check **allowed services** in Profile Management |
-| `429 AuthUserThrottled` | You've hit your per-minute quota — common when re-running the whole notebook quickly. The helper retries automatically; wait a minute if it persists |
-| `429 AuthUserDailyUsageExceeded` | Daily cap reached. It resets at 00:00 UTC |
+| `403 AuthContentFormatForbidden` | Full-document formats aren't enabled for your profile. Use `passage` and leave `FULL_DOCUMENT_ACCESS = False` |
+| `429 AuthUserThrottled` | You've hit your per-second quota (default: `15 QPS`). The helper retries automatically and honors `retryAfter`; reduce your request rate if it persists |
 | `404` from Browse | The URL isn't indexed. Use `liveCrawl="fallback"` (the cookbook does this by default) |
 | Auto (Beta) cell says it isn't available | Auto is enabled per profile. Skip Step 8 or contact your Microsoft contact |
 | Step 9 prints a prompt instead of an answer | `FOUNDRY_PROJECT_ENDPOINT` isn't set — that's expected if you're not using Microsoft Foundry |
-| Can't verify your invitation code | Reply to the invitation with the address shown in the top-right corner of [portal.azure.com](https://portal.azure.com) |
 
 Include the `traceId` from the response when you contact [Web IQ Support](https://aka.ms/microsoft-webiq-support).
 

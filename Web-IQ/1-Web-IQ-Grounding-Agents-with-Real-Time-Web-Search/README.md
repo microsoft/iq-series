@@ -23,10 +23,10 @@ In this episode you'll explore every Web IQ API and learn how to turn its result
 | Concept | What it means |
 |---|---|
 | **Grounding** | Building a model's answer from retrieved, current sources instead of its training memory — the most reliable way to reduce hallucinations |
-| **Content format** | `passage` returns query-relevant paragraphs; `text`, `markdown`, and `html` return the full document. `maxLength` caps the characters per result — your token budget dial |
+| **Content format** | `passage` returns query-relevant paragraphs (up to 3,000 characters without full-document access); `text`, `markdown`, and `html` require full-document access. `maxLength` caps the characters per result — your token budget dial |
 | **Freshness signals** | `crawledAt`, `lastUpdatedAt`, and `querySignals.freshness` tell your agent how current a source is and whether the query needs recent results |
 | **Verticals** | Web, News (last 14 days), Images, and Videos each return vertical-specific fields such as publisher, captions, and video moments |
-| **Browse and live crawl** | Read a specific URL; with `liveCrawl="fallback"`, Web IQ crawls un-indexed pages on demand and returns `202` until content is ready |
+| **Browse and live crawl** | Requires full-document access. Read a specific URL; with `liveCrawl="fallback"`, Web IQ crawls un-indexed pages on demand and returns `202` until content is ready |
 | **Auto (Beta)** | One call that returns typed evidence — text, media, weather, time zones, and more — each with its own citations |
 | **MCP server** | The same capabilities as tools at `https://api.microsoft.ai/v3/mcp` for VS Code, GitHub Copilot, and any MCP client |
 | **Instrumentation** | Optional citation and click telemetry that shows which results your model cited and which ones users opened |
@@ -34,10 +34,10 @@ In this episode you'll explore every Web IQ API and learn how to turn its result
 ## 🛠️ What You'll Build
 
 1. Call **Web Search** and read the response anatomy — content, freshness, provenance, and query signals
-2. Compare **content formats** and control your token budget with `maxLength`
+2. Control your token budget with `maxLength` and optionally compare **content formats** with full-document access
 3. Target results with **`site:` operators, language/region markets, and location**
 4. Retrieve **News**, **Images** (with filters), and **Videos** (with moments)
-5. **Browse** a specific URL with on-demand live crawl
+5. Optionally **Browse** a specific URL with on-demand live crawl (requires full-document access)
 6. Try **Auto (Beta)** for typed evidence with result-scoped citations
 7. **Ground a model's answer** in numbered Web IQ sources with inline citations — optionally using a model deployed in Microsoft Foundry
 8. Handle **errors, rate limits, and retries** with Web IQ's shared error schema
@@ -46,7 +46,7 @@ In this episode you'll explore every Web IQ API and learn how to turn its result
 
 ## 📓 Try the Cookbook
 
-Ready to get hands-on? Head to the [Episode 1 Cookbook](./cookbook/) for prerequisites and a step-by-step Jupyter notebook. All you need is a Web IQ API key.
+Ready to get hands-on? Head to the [Episode 1 Cookbook](./cookbook/) for prerequisites and a step-by-step Jupyter notebook. You'll need a paid Azure subscription, a Web IQ billing resource, and a Web IQ API key.
 
 ## 🔗 Learn More
 
