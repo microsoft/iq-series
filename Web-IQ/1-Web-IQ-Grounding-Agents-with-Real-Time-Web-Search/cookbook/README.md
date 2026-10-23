@@ -77,6 +77,8 @@ The [**Web IQ Cookbook**](./web-iq-cookbook.ipynb) walks you through every Web I
 | `404` from Browse | The URL isn't indexed. Use `liveCrawl="fallback"` (the cookbook does this by default) |
 | Auto (Beta) cell says it isn't available | Auto is enabled per profile. Skip Step 8 or contact your Microsoft contact |
 | Step 9 prints a prompt instead of an answer | `FOUNDRY_PROJECT_ENDPOINT` isn't set — that's expected if you're not using Microsoft Foundry |
+| Videos are returned without moment metadata | Moments are optional. Step 6 reports this explicitly; the video title and URL are still usable |
+| `JSONDecodeError` in an older MCP example despite HTTP 200 | The server can return `text/event-stream` rather than JSON. Use Step 11's updated helper, which supports both response formats |
 
 Include the `traceId` from the response when you contact [Web IQ Support](https://aka.ms/microsoft-webiq-support).
 
