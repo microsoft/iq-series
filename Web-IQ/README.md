@@ -8,6 +8,12 @@ This folder contains the Web IQ episodes of The Microsoft IQ Series, including h
 
 > **👉 New here? Start with Episode 1.** Follow the [Get Started](#-get-started) steps below to get an API key, then open the [Episode 1 cookbook](./1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/) and run it end-to-end.
 
+## Passage-only learning path
+
+For users with passage-only Web IQ access, the [passage-only learning path](./Passage-Only/README.md) provides a separate, standalone [Python cookbook](./Passage-Only/cookbook/web-iq-passage-only-cookbook.ipynb). It covers Web Search with `contentFormat: "passage"`, Images, Videos, and grounded answers with citations. Images and Videos use their native metadata responses rather than a content format.
+
+This path leaves the broader Episode 1 cookbook unchanged.
+
 ## 📚 Episodes
 
 | **Episode**                                                                                                          | **Description**                                                                 | **Video**     | **Cookbook**                                                                              |

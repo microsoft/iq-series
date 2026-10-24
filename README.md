@@ -34,6 +34,8 @@ Together, these IQs enable AI agents to reason, retrieve, and act with deep busi
 | Fabric IQ                                                                                                                            | Coming soon!                                                                       |                 |                                                                                     |
 | [Web IQ: Grounding Agents with Real-Time Web Search](./Web-IQ/1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/README.md)        | Explore every Web IQ API — Web, News, Images, Videos, Browse, and Auto — then ground a model's answer in live sources with citations and connect Web IQ as an MCP server | Coming soon 🎥 | [Cookbook](./Web-IQ/1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/) |
 
+**Passage-only Web IQ users:** Start with the [passage-only learning path](./Web-IQ/Passage-Only/README.md) for Web Search passages, Images, and Videos. Its standalone Python cookbook does not require the broader Episode 1 walkthrough.
+
 ### Episode Format
 
 Each episode includes:
