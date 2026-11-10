@@ -13,7 +13,7 @@ Learn Microsoft IQ with The IQ Series! Microsoft IQ is Microsoft's unified intel
 
 Together, these IQs enable AI agents to reason, retrieve, and act with deep business context, going beyond traditional RAG for true enterprise intelligence.
 
-> **Note:** **Foundry IQ** and **Work IQ** episodes are available now. **Fabric IQ** and **Web IQ** episodes are coming soon.
+> **Note:** **Foundry IQ**, **Work IQ**, and **Web IQ** episodes and cookbooks are available now. **Fabric IQ** episodes are coming soon.
 
 📺 Foundry IQ episodes premiered **every Wednesday at 9 AM PT**, starting **March 18, 2026** on [Microsoft Developer YouTube](https://aka.ms/iq-series/playlist).
 
@@ -32,7 +32,7 @@ Together, these IQs enable AI agents to reason, retrieve, and act with deep busi
 | [Work IQ: A2A for Context‑Aware, Agentic Experiences](./Work-IQ/2-Work-IQ-A2A-for-Context‑Aware-Agentic-Experiences/README.md)                  | Explores the A2A protocol, agent discovery patterns, and practical prototyping for context-aware agentic workflows. | [Watch Now 🎥](https://aka.ms/work-iq-series/episode2) | [Cookbook](./Work-IQ/2-Work-IQ-A2A-for-Context‑Aware-Agentic-Experiences/cookbook/README.md) |
 | [Work IQ: Tooling with MCP & Copilot CLI](./Work-IQ/3-Work-IQ-Tooling-with-MCP-and-Copilot-CLI/README.md)                  | Explores the unified MCP server of Work IQ and how to use it in Work IQ CLI and GitHub Copilot CLI. | [Watch Now 🎥](https://aka.ms/work-iq-series/episode3) | [Cookbook](./Work-IQ/3-Work-IQ-Tooling-with-MCP-and-Copilot-CLI/cookbook/README.md) |
 | Fabric IQ                                                                                                                            | Coming soon!                                                                       |                 |                                                                                     |
-| Web IQ                                                                                                                               | Coming soon!                                                                       |                 |                                                                                     |
+| [Web IQ: Grounding Agents with Real-Time Web Search](./Web-IQ/1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/README.md)        | Explore every Web IQ API — Web, News, Images, Videos, Browse, and Auto — then ground a model's answer in live sources with citations and connect Web IQ as an MCP server | [Watch Now 🎥](https://youtu.be/5O7ZsSHhzpg) | [Cookbook](./Web-IQ/1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/) |
 
 ### Episode Format
 
