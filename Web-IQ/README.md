@@ -12,7 +12,7 @@ This folder contains the Web IQ episodes of The Microsoft IQ Series, including h
 
 | **Episode**                                                                                                          | **Description**                                                                 | **Video**     | **Cookbook**                                                                              |
 |-----------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|---------------|--------------------------------------------------------------------------------------------|
-| [Web IQ: Grounding Agents with Real-Time Web Search](./1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/README.md) | Explore every Web IQ API — Web, News, Images, Videos, Browse, and Auto — then ground a model's answer in live sources with citations and connect Web IQ as an MCP server | Coming soon 🎥 | [Cookbook](./1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/) |
+| [Web IQ: Grounding Agents with Real-Time Web Search](./1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/README.md) | Explore every Web IQ API — Web, News, Images, Videos, Browse, and Auto — then ground a model's answer in live sources with citations and connect Web IQ as an MCP server | [Watch Now 🎥](https://youtu.be/5O7ZsSHhzpg) | [Cookbook](./1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/) |
 
 ## ✨ Why Web IQ
 

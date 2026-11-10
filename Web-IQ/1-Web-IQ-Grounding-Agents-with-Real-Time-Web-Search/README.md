@@ -2,7 +2,7 @@
 
 📂 [Try the cookbook](./cookbook/)
 
-> 📺 This episode's video premiere is **coming soon**. In the meantime, the cookbook below is fully hands-on and works today.
+📺 [Watch the episode](https://youtu.be/5O7ZsSHhzpg)
 
 ## 🎯 What You'll Learn
 

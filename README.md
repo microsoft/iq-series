@@ -1,23 +1,23 @@
 <h1 align="center">The Microsoft IQ Series</h1>
 
 <p align="center">
-  <img src="./images/IQ-Banner-v2.jpg" alt="The IQ Series Banner" />
+  <img src="./images/IQ-Series-Banner-v3.png" alt="The Microsoft IQ Series: Fabric IQ, Foundry IQ, Work IQ and Web IQ. One intelligence layer for AI agents." />
 </p>
 
-Learn Microsoft IQ with The IQ Series! Microsoft IQ is Microsoft's unified intelligence layer for the enterprise, bringing together three core intelligence services:
+Learn Microsoft IQ with The IQ Series! Microsoft IQ is Microsoft's unified intelligence layer for the enterprise, giving AI agents the context to understand your business. It brings together four core intelligence services:
 
-- **Foundry IQ**: A managed knowledge layer for enterprise data; connecting structured and unstructured data across Azure, SharePoint, OneLake, and the web so agents can access permission-aware knowledge.
-- **Work IQ**: Your organization’s intelligence, unlocked for every agent understanding context, relationships, and work patterns so agents can be faster, more accurate, and more secure.
-- **Fabric IQ**: Unify business semantics across data, models, and systems to power intelligent agents and decisions grounded in a live, holistic view of the business.
-- **Web IQ**: Live grounding in the public web; so agents can answer time-sensitive questions with current, cited information beyond your enterprise data.
+- **Fabric IQ** (*your business*): Unify business semantics across data, models, and systems to power intelligent agents and decisions grounded in a live, holistic view of the business.
+- **Foundry IQ** (*your knowledge*): A managed knowledge layer for enterprise data; connecting structured and unstructured data across Azure, SharePoint, OneLake, and the web so agents can access permission-aware knowledge.
+- **Work IQ** (*your work*): Your organization's intelligence, unlocked for every agent: understanding context, relationships, and work patterns so agents can be faster, more accurate, and more secure.
+- **Web IQ** (*the web*): Live grounding in the public web, so agents can answer time-sensitive questions with current, cited information beyond your enterprise data.
 
-Together, these IQs enable AI agents to reason, retrieve, and act with deep business context going beyond traditional RAG for true enterprise intelligence.
+Together, these IQs enable AI agents to reason, retrieve, and act with deep business context, going beyond traditional RAG for true enterprise intelligence.
 
-> **Note:** The series kicks off with **Foundry IQ** episodes, followed by **Work IQ** episodes. Fabric IQ content is coming soon!
+> **Note:** **Foundry IQ**, **Work IQ**, and **Web IQ** episodes and cookbooks are available now. **Fabric IQ** episodes are coming soon.
 
-📺 Foundry IQ episodes premiere **every Wednesday at 9 AM PT**, starting **March 18, 2026** on [Microsoft Developer YouTube](https://aka.ms/iq-series/episodes).
+📺 Foundry IQ episodes premiered **every Wednesday at 9 AM PT**, starting **March 18, 2026** on [Microsoft Developer YouTube](https://aka.ms/iq-series/playlist).
 
-📺 Work IQ episodes premiere **9 AM PT on June 2, 2026** on [Microsoft Developer YouTube](https://aka.ms/iq-series/episodes).
+📺 Work IQ episodes premiered **June 2, 2026 at 9 AM PT** on [Microsoft Developer YouTube](https://aka.ms/iq-series/playlist).
 
 ▶️ Watch all available episodes in the [Microsoft IQ Series playlist](https://aka.ms/iq-series/playlist).
 
@@ -32,7 +32,7 @@ Together, these IQs enable AI agents to reason, retrieve, and act with deep busi
 | [Work IQ: A2A for Context‑Aware, Agentic Experiences](./Work-IQ/2-Work-IQ-A2A-for-Context‑Aware-Agentic-Experiences/README.md)                  | Explores the A2A protocol, agent discovery patterns, and practical prototyping for context-aware agentic workflows. | [Watch Now 🎥](https://aka.ms/work-iq-series/episode2) | [Cookbook](./Work-IQ/2-Work-IQ-A2A-for-Context‑Aware-Agentic-Experiences/cookbook/README.md) |
 | [Work IQ: Tooling with MCP & Copilot CLI](./Work-IQ/3-Work-IQ-Tooling-with-MCP-and-Copilot-CLI/README.md)                  | Explores the unified MCP server of Work IQ and how to use it in Work IQ CLI and GitHub Copilot CLI. | [Watch Now 🎥](https://aka.ms/work-iq-series/episode3) | [Cookbook](./Work-IQ/3-Work-IQ-Tooling-with-MCP-and-Copilot-CLI/cookbook/README.md) |
 | Fabric IQ                                                                                                                            | Coming soon!                                                                       |                 |                                                                                     |
-| [Web IQ: Grounding Agents with Real-Time Web Search](./Web-IQ/1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/README.md)        | Explore every Web IQ API — Web, News, Images, Videos, Browse, and Auto — then ground a model's answer in live sources with citations and connect Web IQ as an MCP server | Coming soon 🎥 | [Cookbook](./Web-IQ/1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/) |
+| [Web IQ: Grounding Agents with Real-Time Web Search](./Web-IQ/1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/README.md)        | Explore every Web IQ API — Web, News, Images, Videos, Browse, and Auto — then ground a model's answer in live sources with citations and connect Web IQ as an MCP server | [Watch Now 🎥](https://youtu.be/5O7ZsSHhzpg) | [Cookbook](./Web-IQ/1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/) |
 
 ### Episode Format
 
@@ -44,9 +44,13 @@ Each episode includes:
 
 Episode folders also include Jupyter notebook cookbooks or markdown lab instructions with hands-on and step-by-step guidance.
 
-## 🏅 Earn the Foundry IQ Badge
+## 🏅 Community Badges
 
-<img src="./images/foundry-iq/foundryiq-badge.png" alt="Foundry IQ Badge" width="150" align="left" style="margin-right: 20px; margin-bottom: 10px;" hspace="20" vspace="10" />
+Complete an IQ's cookbooks or labs to earn its community badge. Badges are issued by the Global AI Community, so please make sure you have an account before submitting.
+
+### Foundry IQ Badge
+
+<img src="./images/foundry-iq/foundryiq-badge.png" alt="Foundry IQ Badge" width="150" align="left" hspace="20" vspace="10" />
 
 Completed all three Foundry IQ cookbooks? You can now request your community badge.
 
@@ -55,9 +59,11 @@ Completed all three Foundry IQ cookbooks? You can now request your community bad
 1. Submit a [badge request issue](https://github.com/microsoft/iq-series/issues/new?template=foundry-iq-badge-request.yml)
 1. Complete the required [badge form](https://aka.ms/iq-series/badge-form)
 
-## 🏅 Earn the Work IQ Badge
+<br clear="left" />
 
-<img src="./images/work-iq/workiq-badge.png" alt="Work IQ Badge" width="150" align="left" style="margin-right: 20px; margin-bottom: 10px;" hspace="20" vspace="10" />
+### Work IQ Badge
+
+<img src="./images/work-iq/workiq-badge.png" alt="Work IQ Badge" width="150" align="left" hspace="20" vspace="10" />
 
 Completed all three Work IQ labs? You can now request your community badge.
 
@@ -65,9 +71,16 @@ Completed all three Work IQ labs? You can now request your community badge.
 1. Submit a [badge request issue](https://github.com/microsoft/iq-series/issues/new?template=work-iq-badge-request.yml)
 1. Complete the required [badge form](https://aka.ms/iq-series/badge-form)
 
-> Badges are issued by the Global AI Community, so please make sure you have an account before submitting.
-
 <br clear="left" />
+
+### Coming Soon: Fabric IQ and Web IQ Badges
+
+<p>
+  <img src="./images/fabric-iq/fabriciq-badge.png" alt="Fabric IQ Badge (coming soon)" width="150" hspace="20" />
+  <img src="./images/web-iq/webiq-badge.jpg" alt="Web IQ Badge (coming soon)" width="150" hspace="20" />
+</p>
+
+The **Fabric IQ** and **Web IQ** badges are coming soon. Stay tuned for the request process!
 
 ## 🚀 Continue Your Microsoft IQ Learning
 

@@ -334,6 +334,20 @@ resource searchToAIServices_CogServicesUser 'Microsoft.Authorization/roleAssignm
   }
 }
 
+// Grant the Foundry project's managed identity Search Index Data Reader on the
+// search service so the agent can call the Knowledge Base MCP endpoint and read
+// indexed content (keyless ProjectManagedIdentity auth). Without this, the agent
+// + MCP flow fails with masked 401/405 errors during tool invocation.
+resource projectToSearch_searchIndexReader 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(resourceGroup().id, searchService.name, project.name, roles.searchIndexDataReader)
+  scope: searchService
+  properties: {
+    principalId: project.identity.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.searchIndexDataReader)
+  }
+}
+
 // ===============================================
 // USER ROLE ASSIGNMENTS
 // ===============================================

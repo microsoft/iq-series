@@ -109,11 +109,9 @@ body:
     attributes:
       label: Episode Insights & Key Takeaways
       description: |
-        To verify your engagement with the series [video content](https://aka.ms/iq-series/episodes), please provide one brief, specific technical takeaway or "aha!" moment from each of the three Foundry IQ episodes.
+        To verify your engagement with the series, please watch the related episodes in the [IQ Series playlist](https://aka.ms/iq-series/playlist) and provide one brief, specific technical takeaway or "aha!" moment from each episode.
       placeholder: |
-        Episode 1: [Your insight]
-        Episode 2: [Your insight]
-        Episode 3: [Your insight]
+        Episode: [Your insight]
     validations:
       required: true
 
