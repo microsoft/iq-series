@@ -45,7 +45,7 @@ SEARCH_ENDPOINT=https://<your-search-service>.search.windows.net
 AOAI_ENDPOINT=https://<your-openai-resource>.openai.azure.com
 AOAI_EMBEDDING_MODEL=text-embedding-3-large
 AOAI_EMBEDDING_DEPLOYMENT=text-embedding-3-large
-AOAI_GPT_MODEL=gpt-4o-mini
+AOAI_GPT_MODEL=gpt-5.4-mini
 AOAI_GPT_DEPLOYMENT=gpt-4o-mini
 ```
 

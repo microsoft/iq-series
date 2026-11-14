@@ -40,10 +40,10 @@ param embeddingModelVersion string = '1'
 param embeddingModelCapacity int = 30
 
 @description('Chat model name')
-param chatModelName string = 'gpt-4o-mini'
+param chatModelName string = 'gpt-5.4-mini'
 
 @description('Chat model version')
-param chatModelVersion string = '2024-07-18'
+param chatModelVersion string = '2026-03-17'
 
 @description('Chat model capacity (1K TPM per unit)')
 @minValue(1)
@@ -526,6 +526,9 @@ output embeddingDeploymentName string = embeddingDeployment.name
 
 @description('Chat deployment name')
 output chatDeploymentName string = chatDeployment.name
+
+@description('Chat model name (use as AOAI_GPT_MODEL in .env)')
+output chatModelName string = chatModelName
 
 @description('Search service name')
 output searchServiceName string = searchService.name

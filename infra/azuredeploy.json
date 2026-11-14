@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.33.93.31351",
-      "templateHash": "10527816216735733280"
+      "version": "0.46.1.21595",
+      "templateHash": "17274317133208813214"
     }
   },
   "parameters": {
@@ -90,14 +90,14 @@
     },
     "chatModelName": {
       "type": "string",
-      "defaultValue": "gpt-4o-mini",
+      "defaultValue": "gpt-5.4-mini",
       "metadata": {
         "description": "Chat model name"
       }
     },
     "chatModelVersion": {
       "type": "string",
-      "defaultValue": "2024-07-18",
+      "defaultValue": "2026-03-17",
       "metadata": {
         "description": "Chat model version"
       }
@@ -393,7 +393,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.Search/searchServices/{0}', variables('names').search)]",
+      "scope": "[resourceId('Microsoft.Search/searchServices', variables('names').search)]",
       "name": "[guid(resourceGroup().id, variables('names').search, variables('names').project, variables('roles').searchIndexDataReader)]",
       "properties": {
         "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', variables('names').aiServices, variables('names').project), '2025-06-01', 'full').identity.principalId]",
@@ -408,7 +408,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.Search/searchServices/{0}', variables('names').search)]",
+      "scope": "[resourceId('Microsoft.Search/searchServices', variables('names').search)]",
       "name": "[guid(resourceGroup().id, variables('names').search, parameters('userObjectId'), variables('roles').searchServiceContributor)]",
       "properties": {
         "principalId": "[parameters('userObjectId')]",
@@ -422,7 +422,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.Search/searchServices/{0}', variables('names').search)]",
+      "scope": "[resourceId('Microsoft.Search/searchServices', variables('names').search)]",
       "name": "[guid(resourceGroup().id, variables('names').search, parameters('userObjectId'), variables('roles').searchIndexDataReader)]",
       "properties": {
         "principalId": "[parameters('userObjectId')]",
@@ -436,7 +436,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.Search/searchServices/{0}', variables('names').search)]",
+      "scope": "[resourceId('Microsoft.Search/searchServices', variables('names').search)]",
       "name": "[guid(resourceGroup().id, variables('names').search, parameters('userObjectId'), variables('roles').searchIndexDataContributor)]",
       "properties": {
         "principalId": "[parameters('userObjectId')]",
@@ -450,7 +450,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.CognitiveServices/accounts/{0}', variables('names').openAi)]",
+      "scope": "[resourceId('Microsoft.CognitiveServices/accounts', variables('names').openAi)]",
       "name": "[guid(resourceGroup().id, variables('names').openAi, parameters('userObjectId'), variables('roles').cognitiveServicesContributor)]",
       "properties": {
         "principalId": "[parameters('userObjectId')]",
@@ -464,7 +464,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.CognitiveServices/accounts/{0}', variables('names').aiServices)]",
+      "scope": "[resourceId('Microsoft.CognitiveServices/accounts', variables('names').aiServices)]",
       "name": "[guid(resourceGroup().id, variables('names').aiServices, parameters('userObjectId'), variables('roles').cognitiveServicesContributor)]",
       "properties": {
         "principalId": "[parameters('userObjectId')]",
@@ -478,7 +478,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.Storage/storageAccounts/{0}', variables('names').storage)]",
+      "scope": "[resourceId('Microsoft.Storage/storageAccounts', variables('names').storage)]",
       "name": "[guid(resourceGroup().id, variables('names').storage, parameters('userObjectId'), variables('roles').storageBlobDataContributor)]",
       "properties": {
         "principalId": "[parameters('userObjectId')]",
@@ -500,7 +500,7 @@
       "condition": "[parameters('seedData')]",
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.Search/searchServices/{0}', variables('names').search)]",
+      "scope": "[resourceId('Microsoft.Search/searchServices', variables('names').search)]",
       "name": "[guid(resourceGroup().id, variables('names').search, 'seed', variables('roles').searchServiceContributor)]",
       "properties": {
         "principalId": "[if(parameters('seedData'), reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}-seed-{1}', parameters('resourcePrefix'), variables('uniqueSuffix'))), '2023-01-31').principalId, '')]",
@@ -516,7 +516,7 @@
       "condition": "[parameters('seedData')]",
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.Search/searchServices/{0}', variables('names').search)]",
+      "scope": "[resourceId('Microsoft.Search/searchServices', variables('names').search)]",
       "name": "[guid(resourceGroup().id, variables('names').search, 'seed', variables('roles').searchIndexDataContributor)]",
       "properties": {
         "principalId": "[if(parameters('seedData'), reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}-seed-{1}', parameters('resourcePrefix'), variables('uniqueSuffix'))), '2023-01-31').principalId, '')]",
@@ -532,7 +532,7 @@
       "condition": "[parameters('seedData')]",
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "scope": "[format('Microsoft.CognitiveServices/accounts/{0}', variables('names').openAi)]",
+      "scope": "[resourceId('Microsoft.CognitiveServices/accounts', variables('names').openAi)]",
       "name": "[guid(resourceGroup().id, variables('names').openAi, 'seed', variables('roles').cognitiveServicesUser)]",
       "properties": {
         "principalId": "[if(parameters('seedData'), reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}-seed-{1}', parameters('resourcePrefix'), variables('uniqueSuffix'))), '2023-01-31').principalId, '')]",
@@ -652,6 +652,13 @@
         "description": "Chat deployment name"
       },
       "value": "[variables('names').chatDeployment]"
+    },
+    "chatModelName": {
+      "type": "string",
+      "metadata": {
+        "description": "Chat model name (use as AOAI_GPT_MODEL in .env)"
+      },
+      "value": "[parameters('chatModelName')]"
     },
     "searchServiceName": {
       "type": "string",

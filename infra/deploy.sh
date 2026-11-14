@@ -117,6 +117,7 @@ AI_SERVICES_ENDPOINT=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; 
 AI_SERVICES_NAME=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['aiServicesName']['value'])")
 EMBEDDING_DEPLOYMENT=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['embeddingDeploymentName']['value'])")
 CHAT_DEPLOYMENT=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['chatDeploymentName']['value'])")
+CHAT_MODEL=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['chatModelName']['value'])")
 FOUNDRY_PROJECT_ENDPOINT=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['foundryProjectEndpoint']['value'])")
 SEARCH_CONNECTION_NAME=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['searchConnectionName']['value'])")
 
@@ -130,10 +131,10 @@ SEARCH_ENDPOINT=$SEARCH_ENDPOINT
 AOAI_ENDPOINT=$AOAI_ENDPOINT
 AOAI_EMBEDDING_MODEL=text-embedding-3-large
 AOAI_EMBEDDING_DEPLOYMENT=$EMBEDDING_DEPLOYMENT
-AOAI_GPT_MODEL=gpt-4o-mini
+AOAI_GPT_MODEL=$CHAT_MODEL
 AOAI_GPT_DEPLOYMENT=$CHAT_DEPLOYMENT
 FOUNDRY_PROJECT_ENDPOINT=$FOUNDRY_PROJECT_ENDPOINT
-FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
+FOUNDRY_MODEL_DEPLOYMENT_NAME=$CHAT_DEPLOYMENT
 AZURE_AI_SEARCH_CONNECTION_NAME=$SEARCH_CONNECTION_NAME
 EOF
 

@@ -87,6 +87,7 @@ $aoaiEndpoint = $deploymentOutput.properties.outputs.openAiEndpoint.value
 $aiServicesEndpoint = $deploymentOutput.properties.outputs.aiServicesEndpoint.value
 $embeddingDeployment = $deploymentOutput.properties.outputs.embeddingDeploymentName.value
 $chatDeployment = $deploymentOutput.properties.outputs.chatDeploymentName.value
+$chatModel = $deploymentOutput.properties.outputs.chatModelName.value
 $foundryProjectEndpoint = $deploymentOutput.properties.outputs.foundryProjectEndpoint.value
 $searchConnectionName = $deploymentOutput.properties.outputs.searchConnectionName.value
 
@@ -100,10 +101,10 @@ SEARCH_ENDPOINT=$searchEndpoint
 AOAI_ENDPOINT=$aoaiEndpoint
 AOAI_EMBEDDING_MODEL=text-embedding-3-large
 AOAI_EMBEDDING_DEPLOYMENT=$embeddingDeployment
-AOAI_GPT_MODEL=gpt-4o-mini
+AOAI_GPT_MODEL=$chatModel
 AOAI_GPT_DEPLOYMENT=$chatDeployment
 FOUNDRY_PROJECT_ENDPOINT=$foundryProjectEndpoint
-FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
+FOUNDRY_MODEL_DEPLOYMENT_NAME=$chatDeployment
 AZURE_AI_SEARCH_CONNECTION_NAME=$searchConnectionName
 "@
 
