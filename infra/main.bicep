@@ -65,7 +65,7 @@ var names = {
   storage: take('${toLower(resourcePrefix)}st${uniqueSuffix}', 24)
   blobContainer: 'product-manuals'
   embeddingDeployment: 'text-embedding-3-large'
-  chatDeployment: 'gpt-4o-mini'
+  chatDeployment: chatModelName
 }
 
 // -----------------------------------------------

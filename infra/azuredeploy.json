@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.46.1.21595",
-      "templateHash": "17274317133208813214"
+      "templateHash": "14505353290205040544"
     }
   },
   "parameters": {
@@ -131,7 +131,7 @@
       "storage": "[take(format('{0}st{1}', toLower(parameters('resourcePrefix')), variables('uniqueSuffix')), 24)]",
       "blobContainer": "product-manuals",
       "embeddingDeployment": "text-embedding-3-large",
-      "chatDeployment": "gpt-4o-mini"
+      "chatDeployment": "[parameters('chatModelName')]"
     },
     "roles": {
       "searchServiceContributor": "7ca78c08-252a-4471-8644-bb5ff32d4ba0",

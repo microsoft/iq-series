@@ -11,7 +11,7 @@ Click the button above to deploy directly from the Azure Portal. You'll be promp
 - **Resource Prefix** — a short name prefix for all resources (default: `iqs`)
 - **Location** — Azure region (must support [agentic retrieval](https://learn.microsoft.com/azure/search/search-region-support))
 
-The default chat model is `gpt-5.4-mini`, version `2026-03-17`. You can override **Chat Model Name** and **Chat Model Version** in the portal for a model/version supported in your region and subscription. The deployment alias remains `gpt-4o-mini` for compatibility with existing cookbook configuration; this alias is not the underlying model name.
+The default chat model is `gpt-5.4-mini`, version `2026-03-17`. You can override **Chat Model Name** and **Chat Model Version** in the portal for a model/version supported in your region and subscription. The chat deployment name follows **Chat Model Name** on both the Azure OpenAI and Foundry resources. After redeploying existing resources, update your cookbook `.env` values to match the deployment outputs.
 
 > **⚠️ Troubleshooting: Deployment script failed?**
 >
@@ -30,9 +30,9 @@ AOAI_ENDPOINT=<openAiEndpoint output>
 AOAI_EMBEDDING_MODEL=text-embedding-3-large
 AOAI_EMBEDDING_DEPLOYMENT=text-embedding-3-large
 AOAI_GPT_MODEL=gpt-5.4-mini
-AOAI_GPT_DEPLOYMENT=gpt-4o-mini
+AOAI_GPT_DEPLOYMENT=gpt-5.4-mini
 FOUNDRY_PROJECT_ENDPOINT=<foundryProjectEndpoint output>
-FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
+FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-5.4-mini
 AZURE_AI_SEARCH_CONNECTION_NAME=<searchConnectionName output>
 ```
 
