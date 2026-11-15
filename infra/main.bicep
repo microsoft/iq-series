@@ -13,7 +13,7 @@ param userObjectId string
 param resourcePrefix string = 'iqs'
 
 @description('Azure region — must support agentic retrieval (see https://learn.microsoft.com/azure/search/search-region-support)')
-param location string = 'eastus2'
+param location string = 'eastus'
 
 @description('AI Search SKU')
 @allowed(['basic', 'standard', 'standard2', 'standard3'])
@@ -40,10 +40,10 @@ param embeddingModelVersion string = '1'
 param embeddingModelCapacity int = 30
 
 @description('Chat model name')
-param chatModelName string = 'gpt-4o-mini'
+param chatModelName string = 'gpt-5.4-mini'
 
 @description('Chat model version')
-param chatModelVersion string = '2024-07-18'
+param chatModelVersion string = '2026-03-17'
 
 @description('Chat model capacity (1K TPM per unit)')
 @minValue(1)
@@ -65,7 +65,7 @@ var names = {
   storage: take('${toLower(resourcePrefix)}st${uniqueSuffix}', 24)
   blobContainer: 'product-manuals'
   embeddingDeployment: 'text-embedding-3-large'
-  chatDeployment: 'gpt-4o-mini'
+  chatDeployment: chatModelName
 }
 
 // -----------------------------------------------
@@ -174,6 +174,10 @@ resource project 'Microsoft.CognitiveServices/accounts/projects@2025-06-01' = {
     displayName: 'IQ Series Foundry Project'
     description: 'Project for running the IQ Series cookbooks'
   }
+  // Account child writes conflict if project creation overlaps model deployment.
+  dependsOn: [
+    aiServicesChatDeployment
+  ]
 }
 
 // ===============================================
@@ -419,7 +423,7 @@ resource userRole_storageBlobContributor 'Microsoft.Authorization/roleAssignment
 }
 
 // ===============================================
-// DATA SEEDING (Deployment Script)
+// DATA SEEDING (Keyless Container Apps runner)
 // Creates search index, uploads sample data,
 // knowledge source, and knowledge base so the
 // MCP endpoint is ready to use immediately
@@ -438,7 +442,7 @@ resource seedRole_searchContributor 'Microsoft.Authorization/roleAssignments@202
   name: guid(resourceGroup().id, searchService.name, 'seed', roles.searchServiceContributor)
   scope: searchService
   properties: {
-    principalId: seedData ? seedIdentity.properties.principalId : ''
+    principalId: seedData ? seedIdentity!.properties.principalId : ''
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.searchServiceContributor)
   }
@@ -449,7 +453,7 @@ resource seedRole_searchIndexContributor 'Microsoft.Authorization/roleAssignment
   name: guid(resourceGroup().id, searchService.name, 'seed', roles.searchIndexDataContributor)
   scope: searchService
   properties: {
-    principalId: seedData ? seedIdentity.properties.principalId : ''
+    principalId: seedData ? seedIdentity!.properties.principalId : ''
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.searchIndexDataContributor)
   }
@@ -461,44 +465,123 @@ resource seedRole_cogServicesUser 'Microsoft.Authorization/roleAssignments@2022-
   name: guid(resourceGroup().id, openAiService.name, 'seed', roles.cognitiveServicesUser)
   scope: openAiService
   properties: {
-    principalId: seedData ? seedIdentity.properties.principalId : ''
+    principalId: seedData ? seedIdentity!.properties.principalId : ''
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roles.cognitiveServicesUser)
   }
 }
 
-resource seedDataScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = if (seedData) {
-  name: '${resourcePrefix}-seed-data'
+resource seedEnvironment 'Microsoft.App/managedEnvironments@2025-01-01' = if (seedData) {
+  name: '${resourcePrefix}-seed-env-${uniqueSuffix}'
   location: location
-  kind: 'AzureCLI'
+  properties: {
+    workloadProfiles: [
+      {
+        name: 'Consumption'
+        workloadProfileType: 'Consumption'
+      }
+    ]
+  }
+}
+
+resource seedRunner 'Microsoft.App/containerApps@2025-01-01' = if (seedData) {
+  name: '${resourcePrefix}-seed-${uniqueSuffix}'
+  location: location
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${seedIdentity.id}': {}
+      '${seedIdentity!.id}': {}
     }
   }
   properties: {
-    azCliVersion: '2.61.0'
-    retentionInterval: 'PT1H'
-    cleanupPreference: 'OnSuccess'
-    timeout: 'PT15M'
-    forceUpdateTag: uniqueSuffix
-    scriptContent: loadTextContent('scripts/seed-data.sh')
-    environmentVariables: [
-      { name: 'SEARCH_ENDPOINT', value: 'https://${searchService.name}.search.windows.net' }
-      { name: 'AOAI_ENDPOINT', value: openAiService.properties.endpoint }
-      { name: 'EMBEDDING_MODEL', value: embeddingModelName }
-      { name: 'EMBEDDING_DEPLOYMENT', value: names.embeddingDeployment }
-      { name: 'GPT_MODEL', value: chatModelName }
-      { name: 'GPT_DEPLOYMENT', value: names.chatDeployment }
-    ]
+    environmentId: seedEnvironment!.id
+    workloadProfileName: 'Consumption'
+    configuration: {
+      activeRevisionsMode: 'Single'
+      ingress: {
+        external: false
+        targetPort: 8080
+        transport: 'http'
+        allowInsecure: false
+      }
+    }
+    template: {
+      containers: [
+        {
+          name: 'seed'
+          image: 'python:3.12-slim-bookworm'
+          command: [
+            '/bin/sh'
+            '-c'
+            loadTextContent('scripts/seed-data.sh')
+            'seed-data.sh'
+          ]
+          args: [
+            '--serve'
+          ]
+          env: [
+            { name: 'AZURE_CLIENT_ID', value: seedData ? seedIdentity!.properties.clientId : '' }
+            { name: 'SEARCH_ENDPOINT', value: 'https://${searchService.name}.search.windows.net' }
+            { name: 'AOAI_ENDPOINT', value: openAiService.properties.endpoint }
+            { name: 'EMBEDDING_MODEL', value: embeddingModelName }
+            { name: 'EMBEDDING_DEPLOYMENT', value: names.embeddingDeployment }
+            { name: 'GPT_MODEL', value: chatModelName }
+            { name: 'GPT_DEPLOYMENT', value: names.chatDeployment }
+            { name: 'SEED_SCRIPT', value: loadTextContent('scripts/seed_data.py') }
+            { name: 'SEED_REQUIREMENTS', value: loadTextContent('scripts/requirements.txt') }
+          ]
+          resources: {
+            cpu: json('0.5')
+            memory: '1Gi'
+          }
+          // The script opens this port only after seeding and verification succeed.
+          probes: [
+            {
+              type: 'Startup'
+              tcpSocket: {
+                port: 8080
+              }
+              periodSeconds: 10
+              failureThreshold: 180
+              timeoutSeconds: 1
+            }
+            {
+              type: 'Readiness'
+              httpGet: {
+                path: '/ready'
+                port: 8080
+              }
+              periodSeconds: 5
+              failureThreshold: 3
+              timeoutSeconds: 1
+            }
+          ]
+        }
+      ]
+      scale: {
+        minReplicas: 0
+        maxReplicas: 1
+        cooldownPeriod: 300
+        rules: [
+          {
+            name: 'http'
+            http: {
+              metadata: {
+                concurrentRequests: '1'
+              }
+            }
+          }
+        ]
+      }
+    }
   }
   dependsOn: [
     seedRole_searchContributor
     seedRole_searchIndexContributor
     seedRole_cogServicesUser
-    embeddingDeployment
     chatDeployment
+    searchToOpenAI_CogServicesUser
+    searchToAIServices_CogServicesUser
   ]
 }
 
@@ -527,6 +610,9 @@ output embeddingDeploymentName string = embeddingDeployment.name
 @description('Chat deployment name')
 output chatDeploymentName string = chatDeployment.name
 
+@description('Chat model name (use as AOAI_GPT_MODEL in .env)')
+output chatModelName string = chatModelName
+
 @description('Search service name')
 output searchServiceName string = searchService.name
 
@@ -553,3 +639,6 @@ output knowledgeBaseName string = 'earth-knowledge-base'
 
 @description('MCP endpoint URL (connect agents to the knowledge base)')
 output mcpEndpoint string = 'https://${searchService.name}.search.windows.net/knowledgebases/earth-knowledge-base/mcp'
+
+@description('Automatic seeding runner name (empty when seedData is false)')
+output seedRunnerName string = seedData ? seedRunner!.name : ''

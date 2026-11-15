@@ -61,7 +61,7 @@ if ($exists -eq "true") {
 
 # Deploy Bicep template
 Write-Host ""
-Write-Host "Deploying infrastructure (this may take 5-10 minutes)..."
+Write-Host "Deploying infrastructure and waiting for automatic setup..."
 Write-Host "  Resource Prefix: $ResourcePrefix"
 Write-Host "  Location: $Location"
 Write-Host "  Search SKU: $SearchSku"
@@ -87,6 +87,7 @@ $aoaiEndpoint = $deploymentOutput.properties.outputs.openAiEndpoint.value
 $aiServicesEndpoint = $deploymentOutput.properties.outputs.aiServicesEndpoint.value
 $embeddingDeployment = $deploymentOutput.properties.outputs.embeddingDeploymentName.value
 $chatDeployment = $deploymentOutput.properties.outputs.chatDeploymentName.value
+$chatModel = $deploymentOutput.properties.outputs.chatModelName.value
 $foundryProjectEndpoint = $deploymentOutput.properties.outputs.foundryProjectEndpoint.value
 $searchConnectionName = $deploymentOutput.properties.outputs.searchConnectionName.value
 
@@ -100,10 +101,10 @@ SEARCH_ENDPOINT=$searchEndpoint
 AOAI_ENDPOINT=$aoaiEndpoint
 AOAI_EMBEDDING_MODEL=text-embedding-3-large
 AOAI_EMBEDDING_DEPLOYMENT=$embeddingDeployment
-AOAI_GPT_MODEL=gpt-4o-mini
+AOAI_GPT_MODEL=$chatModel
 AOAI_GPT_DEPLOYMENT=$chatDeployment
 FOUNDRY_PROJECT_ENDPOINT=$foundryProjectEndpoint
-FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
+FOUNDRY_MODEL_DEPLOYMENT_NAME=$chatDeployment
 AZURE_AI_SEARCH_CONNECTION_NAME=$searchConnectionName
 "@
 
@@ -129,8 +130,9 @@ Write-Host "  Chat:        $chatDeployment"
 Write-Host ""
 Write-Host "Next steps:"
 Write-Host "  1. Copy the .env file to your cookbook folder and run the notebooks!"
-Write-Host "     Copy-Item .env 1-Foundry-IQ-Unlocking-Knowledge-for-Agents/cookbook/.env"
-Write-Host "     cd 1-Foundry-IQ-Unlocking-Knowledge-for-Agents/cookbook/"
+$cookbookDir = Join-Path (Split-Path -Parent $scriptDir) "Foundry-IQ\1-Foundry-IQ-Unlocking-Knowledge-for-Agents\cookbook"
+Write-Host ("     Copy-Item -LiteralPath '{0}' -Destination '{1}'" -f $envFile.Replace("'", "''"), (Join-Path $cookbookDir ".env").Replace("'", "''"))
+Write-Host ("     Set-Location -LiteralPath '{0}'" -f $cookbookDir.Replace("'", "''"))
 Write-Host ""
 Write-Host "Cleanup:"
 Write-Host "  az group delete --name $ResourceGroupName --yes --no-wait"

@@ -22,7 +22,7 @@ while getopts "g:l:p:s:h" opt; do
       echo ""
       echo "Required:"
       echo "  -g  Resource group name"
-      echo "  -l  Azure location (e.g., eastus2)"
+      echo "  -l  Azure location (e.g., eastus)"
       echo ""
       echo "Optional:"
       echo "  -p  Resource prefix (default: iqs)"
@@ -90,7 +90,7 @@ fi
 
 # Deploy Bicep template
 echo ""
-echo "Deploying infrastructure (this may take 5-10 minutes)..."
+echo "Deploying infrastructure and waiting for automatic setup..."
 echo "  Resource Prefix: $RESOURCE_PREFIX"
 echo "  Location: $LOCATION"
 echo "  Search SKU: $SEARCH_SKU"
@@ -117,6 +117,7 @@ AI_SERVICES_ENDPOINT=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; 
 AI_SERVICES_NAME=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['aiServicesName']['value'])")
 EMBEDDING_DEPLOYMENT=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['embeddingDeploymentName']['value'])")
 CHAT_DEPLOYMENT=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['chatDeploymentName']['value'])")
+CHAT_MODEL=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['chatModelName']['value'])")
 FOUNDRY_PROJECT_ENDPOINT=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['foundryProjectEndpoint']['value'])")
 SEARCH_CONNECTION_NAME=$(echo "$DEPLOYMENT_OUTPUT" | python3 -c "import sys,json; print(json.load(sys.stdin)['properties']['outputs']['searchConnectionName']['value'])")
 
@@ -130,10 +131,10 @@ SEARCH_ENDPOINT=$SEARCH_ENDPOINT
 AOAI_ENDPOINT=$AOAI_ENDPOINT
 AOAI_EMBEDDING_MODEL=text-embedding-3-large
 AOAI_EMBEDDING_DEPLOYMENT=$EMBEDDING_DEPLOYMENT
-AOAI_GPT_MODEL=gpt-4o-mini
+AOAI_GPT_MODEL=$CHAT_MODEL
 AOAI_GPT_DEPLOYMENT=$CHAT_DEPLOYMENT
 FOUNDRY_PROJECT_ENDPOINT=$FOUNDRY_PROJECT_ENDPOINT
-FOUNDRY_MODEL_DEPLOYMENT_NAME=gpt-4o-mini
+FOUNDRY_MODEL_DEPLOYMENT_NAME=$CHAT_DEPLOYMENT
 AZURE_AI_SEARCH_CONNECTION_NAME=$SEARCH_CONNECTION_NAME
 EOF
 
@@ -158,8 +159,9 @@ echo "  Chat:        $CHAT_DEPLOYMENT"
 echo ""
 echo "Next steps:"
 echo "  1. Copy the .env file to your cookbook folder and run the notebooks!"
-echo "     cp .env 1-Foundry-IQ-Unlocking-Knowledge-for-Agents/cookbook/.env"
-echo "     cd 1-Foundry-IQ-Unlocking-Knowledge-for-Agents/cookbook/"
+COOKBOOK_DIR="$SCRIPT_DIR/../Foundry-IQ/1-Foundry-IQ-Unlocking-Knowledge-for-Agents/cookbook"
+printf '     cp -- %q %q\n' "$ENV_FILE" "$COOKBOOK_DIR/.env"
+printf '     cd -- %q\n' "$COOKBOOK_DIR"
 echo ""
 echo "Cleanup:"
 echo "  az group delete --name $RESOURCE_GROUP --yes --no-wait"

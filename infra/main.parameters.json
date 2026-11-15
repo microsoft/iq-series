@@ -6,7 +6,7 @@
       "value": "iqs"
     },
     "location": {
-      "value": "eastus2"
+      "value": "eastus"
     },
     "searchServiceSku": {
       "value": "standard"
@@ -27,10 +27,10 @@
       "value": 30
     },
     "chatModelName": {
-      "value": "gpt-4o-mini"
+      "value": "gpt-5.4-mini"
     },
     "chatModelVersion": {
-      "value": "2024-07-18"
+      "value": "2026-03-17"
     },
     "chatModelCapacity": {
       "value": 30

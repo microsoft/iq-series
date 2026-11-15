@@ -7,7 +7,7 @@ This folder contains the hands-on cookbook and MCP connection guides for Episode
 - **Azure Subscription** with permissions to create resources and assign roles
 - **Azure CLI** installed and configured ([Install guide](https://learn.microsoft.com/cli/azure/install-azure-cli))
 - **Python 3.10+** installed
-- A region that supports [agentic retrieval](https://learn.microsoft.com/azure/search/search-region-support) (default: `eastus2`)
+- A region that supports [agentic retrieval](https://learn.microsoft.com/azure/search/search-region-support) (default: `eastus`)
 
 ## 🚀 Deploy Azure Resources
 
@@ -17,12 +17,9 @@ Deploy all required Azure resources with one click — this creates AI Search, A
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://aka.ms/iq-series/deploytoazure)
 
-> **⚠️ Troubleshooting: Deployment script failed?**
+> **Automatic sample-data setup**
 >
-> Some Azure tenants enforce policies that block key-based access on storage accounts. This can cause the **data seeding script** to fail while all other resources deploy successfully. If this happens, your Azure resources are fully deployed — only the sample data and knowledge base setup is missing. You can seed the data manually using either of these alternatives:
->
-> 1. **Run the Episode 1 cookbook**: Open the [Episode 1 cookbook](../../1-Foundry-IQ-Unlocking-Knowledge-for-Agents/cookbook/) and run it end-to-end — it indexes the same NASA "Earth at Night" sample data to your AI Search and creates the knowledge source and knowledge base.
-> 2. **Seed via Foundry IQ UI**: Create an index in AI Search manually using the [NASA Earth at Night dataset](https://raw.githubusercontent.com/Azure-Samples/azure-search-sample-data/main/nasa-e-book/earth-at-night-json/documents.json), then create a knowledge source and knowledge base pointing to it through the Foundry IQ portal.
+> The deployment seeds the NASA "Earth at Night" data and creates its knowledge source and knowledge base using a managed-identity Container Apps runner, without a shared-key storage mount. The runner becomes ready only after setup succeeds and scales to zero when idle. If setup fails, inspect the runner's console and system logs; see [deployment troubleshooting](../../../infra/README.md#one-click-deploy).
 
 In the deployment form:
 
@@ -45,8 +42,8 @@ SEARCH_ENDPOINT=https://<your-search-service>.search.windows.net
 AOAI_ENDPOINT=https://<your-openai-resource>.openai.azure.com
 AOAI_EMBEDDING_MODEL=text-embedding-3-large
 AOAI_EMBEDDING_DEPLOYMENT=text-embedding-3-large
-AOAI_GPT_MODEL=gpt-4o-mini
-AOAI_GPT_DEPLOYMENT=gpt-4o-mini
+AOAI_GPT_MODEL=gpt-5.4-mini
+AOAI_GPT_DEPLOYMENT=gpt-5.4-mini
 ```
 
 **Where to find these values:** All values are available in the deployment **Outputs** tab in the Azure portal.
