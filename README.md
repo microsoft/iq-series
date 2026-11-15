@@ -31,8 +31,8 @@ Together, these IQs enable AI agents to reason, retrieve, and act with deep busi
 | [Work IQ: Data, context, and tools at scale](./Work-IQ/1-Work-IQ-Data-context-and-tools-at-scale/README.md)       | Introduces Work IQ architecture and protocol strategy across REST, A2A, and MCP for enterprise agent experiences. | [Watch Now 🎥](https://aka.ms/work-iq-series/episode1) | [Cookbook](./Work-IQ/1-Work-IQ-Data-context-and-tools-at-scale/cookbook/README.md) |
 | [Work IQ: A2A for Context‑Aware, Agentic Experiences](./Work-IQ/2-Work-IQ-A2A-for-Context‑Aware-Agentic-Experiences/README.md)                  | Explores the A2A protocol, agent discovery patterns, and practical prototyping for context-aware agentic workflows. | [Watch Now 🎥](https://aka.ms/work-iq-series/episode2) | [Cookbook](./Work-IQ/2-Work-IQ-A2A-for-Context‑Aware-Agentic-Experiences/cookbook/README.md) |
 | [Work IQ: Tooling with MCP & Copilot CLI](./Work-IQ/3-Work-IQ-Tooling-with-MCP-and-Copilot-CLI/README.md)                  | Explores the unified MCP server of Work IQ and how to use it in Work IQ CLI and GitHub Copilot CLI. | [Watch Now 🎥](https://aka.ms/work-iq-series/episode3) | [Cookbook](./Work-IQ/3-Work-IQ-Tooling-with-MCP-and-Copilot-CLI/cookbook/README.md) |
-| Fabric IQ                                                                                                                            | Coming soon!                                                                       |                 |                                                                                     |
 | [Web IQ: Grounding Agents with Real-Time Web Search](./Web-IQ/1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/README.md)        | Explore every Web IQ API — Web, News, Images, Videos, Browse, and Auto — then ground a model's answer in live sources with citations and connect Web IQ as an MCP server | [Watch Now 🎥](https://youtu.be/5O7ZsSHhzpg) | [Cookbook](./Web-IQ/1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/) |
+| Fabric IQ                                                                                                                            | Coming soon!                                                                       |                 |                                                                                     |
 
 ### Episode Format
 
@@ -73,14 +73,26 @@ Completed all three Work IQ labs? You can now request your community badge.
 
 <br clear="left" />
 
-### Coming Soon: Fabric IQ and Web IQ Badges
+### Web IQ Badge
+
+<img src="./images/web-iq/webiq-badge.jpg" alt="Web IQ Badge" width="150" align="left" hspace="20" vspace="10" />
+
+Completed the Web IQ cookbook? You can now request your community badge.
+
+1. Fork this repo and save your notebook outputs in your fork
+1. Capture a final output screenshot with your GitHub username or Azure resource name visible
+1. Submit a [badge request issue](https://github.com/microsoft/iq-series/issues/new?template=web-iq-badge-request.yml)
+1. Complete the required [badge form](https://aka.ms/iq-series/badge-form)
+
+<br clear="left" />
+
+### Coming Soon: Fabric IQ Badge
 
 <p>
   <img src="./images/fabric-iq/fabriciq-badge.png" alt="Fabric IQ Badge (coming soon)" width="150" hspace="20" />
-  <img src="./images/web-iq/webiq-badge.jpg" alt="Web IQ Badge (coming soon)" width="150" hspace="20" />
 </p>
 
-The **Fabric IQ** and **Web IQ** badges are coming soon. Stay tuned for the request process!
+The **Fabric IQ** badge is coming soon. Stay tuned for the request process!
 
 ## 🚀 Continue Your Microsoft IQ Learning
 
