@@ -13,14 +13,11 @@ Click the button above to deploy directly from the Azure Portal. You'll be promp
 
 The default chat model is `gpt-5.4-mini`, version `2026-03-17`. You can override **Chat Model Name** and **Chat Model Version** in the portal for a model/version supported in your region and subscription. The chat deployment name follows **Chat Model Name** on both the Azure OpenAI and Foundry resources. After redeploying existing resources, update your cookbook `.env` values to match the deployment outputs.
 
-> **⚠️ Troubleshooting: Deployment script failed?**
->
-> Some Azure tenants enforce policies that block key-based access on storage accounts. The data seeding step uses an [Azure deployment script](https://learn.microsoft.com/azure/azure-resource-manager/templates/deployment-script-template) resource which requires an internal storage account — this can fail under such policies. If this happens, **all core resources are deployed successfully** (AI Search, OpenAI, Foundry project, Blob Storage, RBAC); only the sample data and knowledge base setup is missing.
->
-> You can seed the data manually using either of these alternatives:
->
-> 1. **Run the Episode 1 cookbook**: Open the [Episode 1 cookbook](../Foundry-IQ/1-Foundry-IQ-Unlocking-Knowledge-for-Agents/cookbook/) and run it end-to-end — it indexes the same NASA "Earth at Night" data and creates the knowledge source and knowledge base.
-> 2. **Seed via Foundry IQ UI**: Create an index in AI Search manually using the [NASA Earth at Night dataset](https://raw.githubusercontent.com/Azure-Samples/azure-search-sample-data/main/nasa-e-book/earth-at-night-json/documents.json), then create a knowledge source and knowledge base pointing to it through the Foundry IQ portal.
+Sample data is seeded automatically by an **Azure Container Apps Consumption runner** using managed identity. It creates the `earth-at-night` index, uploads the NASA sample documents, and creates `earth-knowledge-source` and `earth-knowledge-base`. It uses no Azure Files mount, storage account keys, or deployment-script storage account.
+
+The runner's internal-only readiness endpoint opens only after seeding is verified. Permission-propagation failures are retried for up to 10 minutes per operation; other failures surface in the runner's console logs and prevent readiness. The runner scales to zero when idle; a subsequent cold start safely repeats the setup. Set **Seed Data** to `false` only if you intentionally want infrastructure without sample data.
+
+If seeding fails, open the Container App named by the **seedRunnerName** deployment output and inspect **Monitoring > Log stream** (console and system logs). Fix the reported error and redeploy or restart its revision. Do not treat a partial deployment as a ready-to-use knowledge base.
 
 After deployment, copy the output values from the portal and create a `.env` file **inside each episode's `cookbook/` folder** (e.g., `1-Foundry-IQ-Unlocking-Knowledge-for-Agents/cookbook/.env`):
 
@@ -46,10 +43,12 @@ AZURE_AI_SEARCH_CONNECTION_NAME=<searchConnectionName output>
 | **Foundry Project** | Project for running the IQ Series cookbooks |
 | **AI Search Connection** | Connects the Foundry project to your AI Search service |
 | **RBAC Role Assignments** | Proper permissions for your user + service-to-service access |
+| **Container Apps environment + seeding app** | Keyless automatic setup, readiness checks, and scale-to-zero (when `seedData=true`) |
 
 ## 📋 Prerequisites
 
 - **Azure Subscription** with permissions to create resources and assign roles
+- The `Microsoft.App` resource provider registered for automatic seeding
 - **Azure CLI** installed and configured ([Install guide](https://learn.microsoft.com/cli/azure/install-azure-cli))
 - **Python 3.10+** installed
 - A region that supports [agentic retrieval](https://learn.microsoft.com/azure/search/search-region-support) (default: `eastus2`)
@@ -64,7 +63,7 @@ az login
 
 ### 2. Deploy Infrastructure
 
-⏱️ Estimated time: 5-10 minutes
+⏱️ Estimated time: 10-20 minutes, including automatic seeding and permission propagation
 
 **macOS / Linux:**
 
@@ -84,6 +83,7 @@ This will:
 - Create the resource group
 - Deploy all Azure resources via Bicep
 - Set up RBAC role assignments
+- Seed the sample index, documents, knowledge source, and knowledge base automatically
 - Generate a `.env` file in the repo root with all endpoints
 
 ### 3. Run the Cookbooks
@@ -128,3 +128,8 @@ az group delete --name iq-series-rg --yes --no-wait
 | `main.parameters.json` | Default parameter values |
 | `deploy.sh` | Deployment script for macOS/Linux |
 | `deploy.ps1` | Deployment script for Windows PowerShell |
+| `scripts/seed_data.py` | Idempotent managed-identity seeding and readiness endpoint |
+| `scripts/seed-data.sh` | Installs dependencies and starts the seeder |
+| `scripts/requirements.txt` | Seeding dependencies embedded in the portal template |
+
+After changing any seeding file, rebuild `azuredeploy.json` as above: the runner's code and dependencies are embedded in the template, so one-click deployment does not download scripts from a branch.

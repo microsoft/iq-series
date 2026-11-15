@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.46.1.21595",
-      "templateHash": "14505353290205040544"
+      "templateHash": "10473718635495226384"
     }
   },
   "parameters": {
@@ -120,7 +120,9 @@
     }
   },
   "variables": {
-    "$fxv#0": "#!/bin/bash\r\nset -e\r\n\r\necho \"[1/4] Waiting 90 seconds for RBAC role propagation...\"\r\nsleep 90\r\n\r\necho \"[2/4] Installing Python dependencies...\"\r\npip install --break-system-packages -q azure-search-documents==11.7.0b2 azure-identity requests\r\n\r\necho \"[3/4] Running data seed script...\"\r\npython3 <<'PYTHON_SCRIPT'\r\nimport os, json, requests\r\nfrom azure.identity import DefaultAzureCredential, ManagedIdentityCredential\r\nfrom azure.search.documents.indexes import SearchIndexClient\r\nfrom azure.search.documents import SearchIndexingBufferedSender\r\nfrom azure.search.documents.indexes.models import (\r\n    SearchIndex, SearchField, VectorSearch, VectorSearchProfile,\r\n    HnswAlgorithmConfiguration, AzureOpenAIVectorizer,\r\n    AzureOpenAIVectorizerParameters, SemanticSearch,\r\n    SemanticConfiguration, SemanticPrioritizedFields, SemanticField,\r\n    SearchIndexKnowledgeSource, SearchIndexKnowledgeSourceParameters,\r\n    SearchIndexFieldReference, KnowledgeBase, KnowledgeBaseAzureOpenAIModel,\r\n    KnowledgeSourceReference, KnowledgeRetrievalOutputMode,\r\n)\r\n\r\ncredential = DefaultAzureCredential()\r\n\r\nSEARCH_ENDPOINT = os.environ[\"SEARCH_ENDPOINT\"]\r\nAOAI_ENDPOINT = os.environ[\"AOAI_ENDPOINT\"]\r\nEMBEDDING_MODEL = os.environ[\"EMBEDDING_MODEL\"]\r\nEMBEDDING_DEPLOYMENT = os.environ[\"EMBEDDING_DEPLOYMENT\"]\r\nGPT_MODEL = os.environ[\"GPT_MODEL\"]\r\nGPT_DEPLOYMENT = os.environ[\"GPT_DEPLOYMENT\"]\r\n\r\nINDEX_NAME = \"earth-at-night\"\r\nKNOWLEDGE_SOURCE_NAME = \"earth-knowledge-source\"\r\nKNOWLEDGE_BASE_NAME = \"earth-knowledge-base\"\r\n\r\n# -- Step 1: Create search index --\r\nindex_client = SearchIndexClient(endpoint=SEARCH_ENDPOINT, credential=credential)\r\n\r\nindex = SearchIndex(\r\n    name=INDEX_NAME,\r\n    fields=[\r\n        SearchField(name=\"id\", type=\"Edm.String\", key=True, filterable=True),\r\n        SearchField(name=\"page_chunk\", type=\"Edm.String\"),\r\n        SearchField(\r\n            name=\"page_embedding_text_3_large\",\r\n            type=\"Collection(Edm.Single)\",\r\n            stored=False,\r\n            vector_search_dimensions=3072,\r\n            vector_search_profile_name=\"hnsw_text_3_large\",\r\n        ),\r\n        SearchField(name=\"page_number\", type=\"Edm.Int32\", filterable=True),\r\n    ],\r\n    vector_search=VectorSearch(\r\n        profiles=[VectorSearchProfile(\r\n            name=\"hnsw_text_3_large\",\r\n            algorithm_configuration_name=\"alg\",\r\n            vectorizer_name=\"azure_openai_text_3_large\",\r\n        )],\r\n        algorithms=[HnswAlgorithmConfiguration(name=\"alg\")],\r\n        vectorizers=[AzureOpenAIVectorizer(\r\n            vectorizer_name=\"azure_openai_text_3_large\",\r\n            parameters=AzureOpenAIVectorizerParameters(\r\n                resource_url=AOAI_ENDPOINT,\r\n                deployment_name=EMBEDDING_DEPLOYMENT,\r\n                model_name=EMBEDDING_MODEL,\r\n            ),\r\n        )],\r\n    ),\r\n    semantic_search=SemanticSearch(\r\n        default_configuration_name=\"semantic_config\",\r\n        configurations=[SemanticConfiguration(\r\n            name=\"semantic_config\",\r\n            prioritized_fields=SemanticPrioritizedFields(\r\n                content_fields=[SemanticField(field_name=\"page_chunk\")]\r\n            ),\r\n        )],\r\n    ),\r\n)\r\nindex_client.create_or_update_index(index)\r\nprint(f\"[OK] Index '{INDEX_NAME}' created\")\r\n\r\n# -- Step 2: Upload sample documents --\r\nDATA_URL = \"https://raw.githubusercontent.com/Azure-Samples/azure-search-sample-data/main/nasa-e-book/earth-at-night-json/documents.json\"\r\ndocuments = requests.get(DATA_URL).json()\r\n\r\nwith SearchIndexingBufferedSender(\r\n    endpoint=SEARCH_ENDPOINT, index_name=INDEX_NAME, credential=credential\r\n) as sender:\r\n    sender.upload_documents(documents=documents)\r\nprint(f\"[OK] {len(documents)} documents uploaded to '{INDEX_NAME}'\")\r\n\r\n# -- Step 3: Create knowledge source --\r\nknowledge_source = SearchIndexKnowledgeSource(\r\n    name=KNOWLEDGE_SOURCE_NAME,\r\n    description=\"NASA Earth at Night data\",\r\n    search_index_parameters=SearchIndexKnowledgeSourceParameters(\r\n        search_index_name=INDEX_NAME,\r\n        source_data_fields=[\r\n            SearchIndexFieldReference(name=\"id\"),\r\n            SearchIndexFieldReference(name=\"page_number\"),\r\n        ],\r\n    ),\r\n)\r\nindex_client.create_or_update_knowledge_source(knowledge_source=knowledge_source)\r\nprint(f\"[OK] Knowledge source '{KNOWLEDGE_SOURCE_NAME}' created\")\r\n\r\n# -- Step 4: Create knowledge base --\r\nknowledge_base = KnowledgeBase(\r\n    name=KNOWLEDGE_BASE_NAME,\r\n    models=[KnowledgeBaseAzureOpenAIModel(\r\n        azure_open_ai_parameters=AzureOpenAIVectorizerParameters(\r\n            resource_url=AOAI_ENDPOINT,\r\n            deployment_name=GPT_DEPLOYMENT,\r\n            model_name=GPT_MODEL,\r\n        )\r\n    )],\r\n    knowledge_sources=[KnowledgeSourceReference(name=KNOWLEDGE_SOURCE_NAME)],\r\n    output_mode=KnowledgeRetrievalOutputMode.ANSWER_SYNTHESIS,\r\n    answer_instructions=\"Provide a concise, informative answer grounded in the retrieved documents.\",\r\n)\r\nindex_client.create_or_update_knowledge_base(knowledge_base)\r\nprint(f\"[OK] Knowledge base '{KNOWLEDGE_BASE_NAME}' created\")\r\n\r\nprint(f\"\\n[4/4] Data seeding complete!\")\r\nprint(f\"MCP endpoint: {SEARCH_ENDPOINT}/knowledgebases/{KNOWLEDGE_BASE_NAME}/mcp\")\r\nPYTHON_SCRIPT\r\n",
+    "$fxv#0": "#!/bin/sh\nset -eu\n\nif [ -n \"${SEED_SCRIPT:-}\" ]; then\n    script_dir=\"$(mktemp -d)\"\n    printf '%s' \"$SEED_SCRIPT\" > \"$script_dir/seed_data.py\"\n    printf '%s' \"$SEED_REQUIREMENTS\" > \"$script_dir/requirements.txt\"\nelse\n    script_dir=\"$(CDPATH= cd -- \"$(dirname -- \"$0\")\" && pwd)\"\nfi\n\necho \"Installing seeding dependencies...\"\npython3 -m pip install --disable-pip-version-check --no-cache-dir -q -r \"$script_dir/requirements.txt\"\nexec python3 -u \"$script_dir/seed_data.py\" \"$@\"\n",
+    "$fxv#1": "import argparse\r\nimport logging\r\nimport os\r\nimport time\r\nfrom http.server import BaseHTTPRequestHandler, HTTPServer\r\n\r\nimport requests\r\nfrom azure.core.exceptions import (\r\n    ClientAuthenticationError,\r\n    HttpResponseError,\r\n    ServiceRequestError,\r\n    ServiceResponseError,\r\n)\r\nfrom azure.identity import DefaultAzureCredential\r\nfrom azure.search.documents import SearchClient\r\nfrom azure.search.documents.indexes import SearchIndexClient\r\nfrom azure.search.documents.indexes.models import (\r\n    AzureOpenAIVectorizer,\r\n    AzureOpenAIVectorizerParameters,\r\n    HnswAlgorithmConfiguration,\r\n    KnowledgeBase,\r\n    KnowledgeBaseAzureOpenAIModel,\r\n    KnowledgeSourceReference,\r\n    SearchField,\r\n    SearchIndex,\r\n    SearchIndexFieldReference,\r\n    SearchIndexKnowledgeSource,\r\n    SearchIndexKnowledgeSourceParameters,\r\n    SemanticConfiguration,\r\n    SemanticField,\r\n    SemanticPrioritizedFields,\r\n    SemanticSearch,\r\n    VectorSearch,\r\n    VectorSearchProfile,\r\n)\r\nfrom azure.search.documents.knowledgebases.models import KnowledgeRetrievalOutputMode\r\n\r\nINDEX_NAME = \"earth-at-night\"\r\nKNOWLEDGE_SOURCE_NAME = \"earth-knowledge-source\"\r\nKNOWLEDGE_BASE_NAME = \"earth-knowledge-base\"\r\nDATA_URL = (\r\n    \"https://raw.githubusercontent.com/Azure-Samples/azure-search-sample-data/\"\r\n    \"main/nasa-e-book/earth-at-night-json/documents.json\"\r\n)\r\nlogger = logging.getLogger(\"seed\")\r\n\r\n\r\ndef retry_operation(operation, description, timeout=600):\r\n    deadline = time.monotonic() + timeout\r\n    while True:\r\n        try:\r\n            return operation()\r\n        except (HttpResponseError, ServiceRequestError, ServiceResponseError) as error:\r\n            if isinstance(error, HttpResponseError):\r\n                if not isinstance(error, ClientAuthenticationError) and error.status_code not in (\r\n                    401, 403, 408, 409, 429, 500, 502, 503, 504\r\n                ):\r\n                    raise\r\n            remaining = deadline - time.monotonic()\r\n            if remaining <= 0:\r\n                raise\r\n            logger.warning(\"%s not ready; retrying: %s\", description, error)\r\n            time.sleep(min(15, remaining))\r\n\r\n\r\ndef create_index(endpoint, embedding_model, embedding_deployment):\r\n    return SearchIndex(\r\n        name=INDEX_NAME,\r\n        fields=[\r\n            SearchField(name=\"id\", type=\"Edm.String\", key=True, filterable=True),\r\n            SearchField(name=\"page_chunk\", type=\"Edm.String\"),\r\n            SearchField(\r\n                name=\"page_embedding_text_3_large\",\r\n                type=\"Collection(Edm.Single)\",\r\n                stored=False,\r\n                vector_search_dimensions=3072,\r\n                vector_search_profile_name=\"hnsw_text_3_large\",\r\n            ),\r\n            SearchField(name=\"page_number\", type=\"Edm.Int32\", filterable=True),\r\n        ],\r\n        vector_search=VectorSearch(\r\n            profiles=[\r\n                VectorSearchProfile(\r\n                    name=\"hnsw_text_3_large\",\r\n                    algorithm_configuration_name=\"alg\",\r\n                    vectorizer_name=\"azure_openai_text_3_large\",\r\n                )\r\n            ],\r\n            algorithms=[HnswAlgorithmConfiguration(name=\"alg\")],\r\n            vectorizers=[\r\n                AzureOpenAIVectorizer(\r\n                    vectorizer_name=\"azure_openai_text_3_large\",\r\n                    parameters=AzureOpenAIVectorizerParameters(\r\n                        resource_url=endpoint,\r\n                        deployment_name=embedding_deployment,\r\n                        model_name=embedding_model,\r\n                    ),\r\n                )\r\n            ],\r\n        ),\r\n        semantic_search=SemanticSearch(\r\n            default_configuration_name=\"semantic_config\",\r\n            configurations=[\r\n                SemanticConfiguration(\r\n                    name=\"semantic_config\",\r\n                    prioritized_fields=SemanticPrioritizedFields(\r\n                        content_fields=[SemanticField(field_name=\"page_chunk\")]\r\n                    ),\r\n                )\r\n            ],\r\n        ),\r\n    )\r\n\r\n\r\ndef upload_documents(search_client, documents):\r\n    for offset in range(0, len(documents), 32):\r\n        batch = documents[offset:offset + 32]\r\n        results = retry_operation(\r\n            lambda: search_client.merge_or_upload_documents(documents=batch),\r\n            \"Document upload\",\r\n        )\r\n        failed = [result for result in results if not result.succeeded]\r\n        if failed:\r\n            errors = \"; \".join(\r\n                f\"{result.key}: {result.status_code} {result.error_message}\"\r\n                for result in failed\r\n            )\r\n            raise RuntimeError(f\"Document upload failed: {errors}\")\r\n        logger.info(\"Uploaded %s/%s documents\", offset + len(batch), len(documents))\r\n\r\n\r\ndef wait_for_documents(search_client, expected_count, timeout=120):\r\n    deadline = time.monotonic() + timeout\r\n    while True:\r\n        count = retry_operation(search_client.get_document_count, \"Index availability\")\r\n        if count >= expected_count:\r\n            return\r\n        if time.monotonic() >= deadline:\r\n            raise TimeoutError(f\"Expected {expected_count} indexed documents, found {count}\")\r\n        time.sleep(5)\r\n\r\n\r\ndef seed_data():\r\n    search_endpoint = os.environ[\"SEARCH_ENDPOINT\"]\r\n    openai_endpoint = os.environ[\"AOAI_ENDPOINT\"]\r\n    index = create_index(\r\n        openai_endpoint,\r\n        os.environ[\"EMBEDDING_MODEL\"],\r\n        os.environ[\"EMBEDDING_DEPLOYMENT\"],\r\n    )\r\n    with DefaultAzureCredential(\r\n        managed_identity_client_id=os.environ.get(\"AZURE_CLIENT_ID\")\r\n    ) as credential, SearchIndexClient(\r\n        endpoint=search_endpoint,\r\n        credential=credential,\r\n        connection_timeout=15,\r\n        read_timeout=60,\r\n    ) as index_client, SearchClient(\r\n        endpoint=search_endpoint,\r\n        index_name=INDEX_NAME,\r\n        credential=credential,\r\n        connection_timeout=15,\r\n        read_timeout=60,\r\n    ) as search_client:\r\n        retry_operation(\r\n            lambda: index_client.create_or_update_index(index), \"Index creation\"\r\n        )\r\n        logger.info(\"Index '%s' ready\", INDEX_NAME)\r\n\r\n        with requests.get(DATA_URL, timeout=(15, 120)) as response:\r\n            response.raise_for_status()\r\n            documents = response.json()\r\n        if not isinstance(documents, list) or not documents:\r\n            raise ValueError(\"Sample dataset must be a nonempty list of documents\")\r\n        upload_documents(search_client, documents)\r\n        wait_for_documents(search_client, len(documents))\r\n\r\n        knowledge_source = SearchIndexKnowledgeSource(\r\n            name=KNOWLEDGE_SOURCE_NAME,\r\n            description=\"NASA Earth at Night data\",\r\n            search_index_parameters=SearchIndexKnowledgeSourceParameters(\r\n                search_index_name=INDEX_NAME,\r\n                source_data_fields=[\r\n                    SearchIndexFieldReference(name=\"id\"),\r\n                    SearchIndexFieldReference(name=\"page_number\"),\r\n                ],\r\n            ),\r\n        )\r\n        retry_operation(\r\n            lambda: index_client.create_or_update_knowledge_source(\r\n                knowledge_source=knowledge_source\r\n            ),\r\n            \"Knowledge source creation\",\r\n        )\r\n        knowledge_base = KnowledgeBase(\r\n            name=KNOWLEDGE_BASE_NAME,\r\n            models=[\r\n                KnowledgeBaseAzureOpenAIModel(\r\n                    azure_open_ai_parameters=AzureOpenAIVectorizerParameters(\r\n                        resource_url=openai_endpoint,\r\n                        deployment_name=os.environ[\"GPT_DEPLOYMENT\"],\r\n                        model_name=os.environ[\"GPT_MODEL\"],\r\n                    )\r\n                )\r\n            ],\r\n            knowledge_sources=[KnowledgeSourceReference(name=KNOWLEDGE_SOURCE_NAME)],\r\n            output_mode=KnowledgeRetrievalOutputMode.ANSWER_SYNTHESIS,\r\n            answer_instructions=(\r\n                \"Provide a concise, informative answer grounded in the retrieved documents.\"\r\n            ),\r\n        )\r\n        retry_operation(\r\n            lambda: index_client.create_or_update_knowledge_base(knowledge_base),\r\n            \"Knowledge base creation\",\r\n        )\r\n        retry_operation(\r\n            lambda: index_client.get_knowledge_base(KNOWLEDGE_BASE_NAME),\r\n            \"Knowledge base verification\",\r\n        )\r\n        logger.info(\r\n            \"Seeding complete: %s documents; MCP endpoint: %s/knowledgebases/%s/mcp\",\r\n            len(documents), search_endpoint, KNOWLEDGE_BASE_NAME,\r\n        )\r\n\r\n\r\nclass ReadinessHandler(BaseHTTPRequestHandler):\r\n    def do_GET(self):\r\n        if self.path != \"/ready\":\r\n            self.send_error(404)\r\n            return\r\n        self.send_response(200)\r\n        self.end_headers()\r\n        self.wfile.write(b\"Seeding complete\\n\")\r\n\r\n\r\ndef main():\r\n    parser = argparse.ArgumentParser(description=\"Seed the Foundry IQ sample knowledge base\")\r\n    parser.add_argument(\"--serve\", action=\"store_true\")\r\n    args = parser.parse_args()\r\n    logging.basicConfig(level=logging.INFO, format=\"%(asctime)s %(levelname)s %(message)s\")\r\n    logging.getLogger(\"azure\").setLevel(logging.WARNING)\r\n    seed_data()\r\n    if args.serve:\r\n        logger.info(\"Seeding verified; readiness endpoint listening on port 8080\")\r\n        HTTPServer((\"0.0.0.0\", 8080), ReadinessHandler).serve_forever()\r\n\r\n\r\nif __name__ == \"__main__\":\r\n    main()\r\n",
+    "$fxv#2": "azure-search-documents==12.1.0b1\r\nazure-identity>=1.19,<2\r\nrequests>=2.32,<3\r\n",
     "uniqueSuffix": "[uniqueString(resourceGroup().id)]",
     "names": {
       "search": "[format('{0}-search-{1}', parameters('resourcePrefix'), variables('uniqueSuffix'))]",
@@ -225,7 +227,8 @@
         "description": "Project for running the IQ Series cookbooks"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', variables('names').aiServices)]"
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('names').aiServices)]",
+        "[resourceId('Microsoft.CognitiveServices/accounts/deployments', variables('names').aiServices, variables('names').chatDeployment)]"
       ]
     },
     {
@@ -546,11 +549,25 @@
     },
     {
       "condition": "[parameters('seedData')]",
-      "type": "Microsoft.Resources/deploymentScripts",
-      "apiVersion": "2023-08-01",
-      "name": "[format('{0}-seed-data', parameters('resourcePrefix'))]",
+      "type": "Microsoft.App/managedEnvironments",
+      "apiVersion": "2025-01-01",
+      "name": "[format('{0}-seed-env-{1}', parameters('resourcePrefix'), variables('uniqueSuffix'))]",
       "location": "[parameters('location')]",
-      "kind": "AzureCLI",
+      "properties": {
+        "workloadProfiles": [
+          {
+            "name": "Consumption",
+            "workloadProfileType": "Consumption"
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[parameters('seedData')]",
+      "type": "Microsoft.App/containerApps",
+      "apiVersion": "2025-01-01",
+      "name": "[format('{0}-seed-{1}', parameters('resourcePrefix'), variables('uniqueSuffix'))]",
+      "location": "[parameters('location')]",
       "identity": {
         "type": "UserAssigned",
         "userAssignedIdentities": {
@@ -558,44 +575,120 @@
         }
       },
       "properties": {
-        "azCliVersion": "2.61.0",
-        "retentionInterval": "PT1H",
-        "cleanupPreference": "OnSuccess",
-        "timeout": "PT15M",
-        "forceUpdateTag": "[variables('uniqueSuffix')]",
-        "scriptContent": "[variables('$fxv#0')]",
-        "environmentVariables": [
-          {
-            "name": "SEARCH_ENDPOINT",
-            "value": "[format('https://{0}.search.windows.net', variables('names').search)]"
-          },
-          {
-            "name": "AOAI_ENDPOINT",
-            "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts', variables('names').openAi), '2023-10-01-preview').endpoint]"
-          },
-          {
-            "name": "EMBEDDING_MODEL",
-            "value": "[parameters('embeddingModelName')]"
-          },
-          {
-            "name": "EMBEDDING_DEPLOYMENT",
-            "value": "[variables('names').embeddingDeployment]"
-          },
-          {
-            "name": "GPT_MODEL",
-            "value": "[parameters('chatModelName')]"
-          },
-          {
-            "name": "GPT_DEPLOYMENT",
-            "value": "[variables('names').chatDeployment]"
+        "environmentId": "[resourceId('Microsoft.App/managedEnvironments', format('{0}-seed-env-{1}', parameters('resourcePrefix'), variables('uniqueSuffix')))]",
+        "workloadProfileName": "Consumption",
+        "configuration": {
+          "activeRevisionsMode": "Single",
+          "ingress": {
+            "external": false,
+            "targetPort": 8080,
+            "transport": "http",
+            "allowInsecure": false
           }
-        ]
+        },
+        "template": {
+          "containers": [
+            {
+              "name": "seed",
+              "image": "python:3.12-slim-bookworm",
+              "command": [
+                "/bin/sh",
+                "-c",
+                "[variables('$fxv#0')]",
+                "seed-data.sh"
+              ],
+              "args": [
+                "--serve"
+              ],
+              "env": [
+                {
+                  "name": "AZURE_CLIENT_ID",
+                  "value": "[if(parameters('seedData'), reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}-seed-{1}', parameters('resourcePrefix'), variables('uniqueSuffix'))), '2023-01-31').clientId, '')]"
+                },
+                {
+                  "name": "SEARCH_ENDPOINT",
+                  "value": "[format('https://{0}.search.windows.net', variables('names').search)]"
+                },
+                {
+                  "name": "AOAI_ENDPOINT",
+                  "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts', variables('names').openAi), '2023-10-01-preview').endpoint]"
+                },
+                {
+                  "name": "EMBEDDING_MODEL",
+                  "value": "[parameters('embeddingModelName')]"
+                },
+                {
+                  "name": "EMBEDDING_DEPLOYMENT",
+                  "value": "[variables('names').embeddingDeployment]"
+                },
+                {
+                  "name": "GPT_MODEL",
+                  "value": "[parameters('chatModelName')]"
+                },
+                {
+                  "name": "GPT_DEPLOYMENT",
+                  "value": "[variables('names').chatDeployment]"
+                },
+                {
+                  "name": "SEED_SCRIPT",
+                  "value": "[variables('$fxv#1')]"
+                },
+                {
+                  "name": "SEED_REQUIREMENTS",
+                  "value": "[variables('$fxv#2')]"
+                }
+              ],
+              "resources": {
+                "cpu": "[json('0.5')]",
+                "memory": "1Gi"
+              },
+              "probes": [
+                {
+                  "type": "Startup",
+                  "tcpSocket": {
+                    "port": 8080
+                  },
+                  "periodSeconds": 10,
+                  "failureThreshold": 180,
+                  "timeoutSeconds": 1
+                },
+                {
+                  "type": "Readiness",
+                  "httpGet": {
+                    "path": "/ready",
+                    "port": 8080
+                  },
+                  "periodSeconds": 5,
+                  "failureThreshold": 3,
+                  "timeoutSeconds": 1
+                }
+              ]
+            }
+          ],
+          "scale": {
+            "minReplicas": 0,
+            "maxReplicas": 1,
+            "cooldownPeriod": 300,
+            "rules": [
+              {
+                "name": "http",
+                "http": {
+                  "metadata": {
+                    "concurrentRequests": "1"
+                  }
+                }
+              }
+            ]
+          }
+        }
       },
       "dependsOn": [
         "[resourceId('Microsoft.CognitiveServices/accounts/deployments', variables('names').openAi, variables('names').chatDeployment)]",
-        "[resourceId('Microsoft.CognitiveServices/accounts/deployments', variables('names').openAi, variables('names').embeddingDeployment)]",
         "[resourceId('Microsoft.CognitiveServices/accounts', variables('names').openAi)]",
         "[resourceId('Microsoft.Search/searchServices', variables('names').search)]",
+        "[resourceId('Microsoft.Authorization/roleAssignments', guid(subscription().id, variables('names').search, variables('roles').cognitiveServicesUser))]",
+        "[resourceId('Microsoft.Authorization/roleAssignments', guid(subscription().id, variables('names').search, variables('roles').cognitiveServicesOpenAIUser))]",
+        "[resourceId('Microsoft.App/managedEnvironments', format('{0}-seed-env-{1}', parameters('resourcePrefix'), variables('uniqueSuffix')))]",
         "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', format('{0}-seed-{1}', parameters('resourcePrefix'), variables('uniqueSuffix')))]",
         "[extensionResourceId(resourceId('Microsoft.CognitiveServices/accounts', variables('names').openAi), 'Microsoft.Authorization/roleAssignments', guid(resourceGroup().id, variables('names').openAi, 'seed', variables('roles').cognitiveServicesUser))]",
         "[extensionResourceId(resourceId('Microsoft.Search/searchServices', variables('names').search), 'Microsoft.Authorization/roleAssignments', guid(resourceGroup().id, variables('names').search, 'seed', variables('roles').searchServiceContributor))]",
@@ -722,6 +815,13 @@
         "description": "MCP endpoint URL (connect agents to the knowledge base)"
       },
       "value": "[format('https://{0}.search.windows.net/knowledgebases/earth-knowledge-base/mcp', variables('names').search)]"
+    },
+    "seedRunnerName": {
+      "type": "string",
+      "metadata": {
+        "description": "Automatic seeding runner name (empty when seedData is false)"
+      },
+      "value": "[if(parameters('seedData'), format('{0}-seed-{1}', parameters('resourcePrefix'), variables('uniqueSuffix')), '')]"
     }
   }
 }
