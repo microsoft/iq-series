@@ -51,7 +51,7 @@ AZURE_AI_SEARCH_CONNECTION_NAME=<searchConnectionName output>
 - The `Microsoft.App` resource provider registered for automatic seeding
 - **Azure CLI** installed and configured ([Install guide](https://learn.microsoft.com/cli/azure/install-azure-cli))
 - **Python 3.10+** installed
-- A region that supports [agentic retrieval](https://learn.microsoft.com/azure/search/search-region-support) (default: `eastus2`)
+- A region that supports [agentic retrieval](https://learn.microsoft.com/azure/search/search-region-support) (default: `eastus`)
 
 ## 🚀 Quick Start
 
@@ -69,14 +69,14 @@ az login
 
 ```bash
 cd infra
-./deploy.sh -g "iq-series-rg" -l "eastus2"
+./deploy.sh -g "iq-series-rg" -l "eastus"
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 cd infra
-.\deploy.ps1 -ResourceGroupName "iq-series-rg" -Location "eastus2"
+.\deploy.ps1 -ResourceGroupName "iq-series-rg" -Location "eastus"
 ```
 
 This will:
@@ -88,12 +88,25 @@ This will:
 
 ### 3. Run the Cookbooks
 
+From the `infra` directory, copy the generated configuration into the cookbook folder.
+
+**macOS / Linux:**
+
 ```bash
-cd 1-Foundry-IQ-Unlocking-Knowledge-for-Agents/cookbook/
+cp ../.env ../Foundry-IQ/1-Foundry-IQ-Unlocking-Knowledge-for-Agents/cookbook/.env
+cd ../Foundry-IQ/1-Foundry-IQ-Unlocking-Knowledge-for-Agents/cookbook/
 # Open foundry-iq-cookbook.ipynb in VS Code or Jupyter
 ```
 
-The notebooks will automatically read from the `.env` file — no manual configuration needed.
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item -LiteralPath ..\.env -Destination ..\Foundry-IQ\1-Foundry-IQ-Unlocking-Knowledge-for-Agents\cookbook\.env
+Set-Location ..\Foundry-IQ\1-Foundry-IQ-Unlocking-Knowledge-for-Agents\cookbook
+# Open foundry-iq-cookbook.ipynb in VS Code or Jupyter
+```
+
+The notebooks automatically read the `.env` file in their cookbook folder.
 
 ## Updating the Deployment Template
 

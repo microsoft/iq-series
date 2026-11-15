@@ -13,7 +13,7 @@ param userObjectId string
 param resourcePrefix string = 'iqs'
 
 @description('Azure region — must support agentic retrieval (see https://learn.microsoft.com/azure/search/search-region-support)')
-param location string = 'eastus2'
+param location string = 'eastus'
 
 @description('AI Search SKU')
 @allowed(['basic', 'standard', 'standard2', 'standard3'])

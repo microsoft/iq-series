@@ -7,7 +7,7 @@ This folder contains the hands-on cookbook and MCP connection guides for Episode
 - **Azure Subscription** with permissions to create resources and assign roles
 - **Azure CLI** installed and configured ([Install guide](https://learn.microsoft.com/cli/azure/install-azure-cli))
 - **Python 3.10+** installed
-- A region that supports [agentic retrieval](https://learn.microsoft.com/azure/search/search-region-support) (default: `eastus2`)
+- A region that supports [agentic retrieval](https://learn.microsoft.com/azure/search/search-region-support) (default: `eastus`)
 
 ## 🚀 Deploy Azure Resources
 

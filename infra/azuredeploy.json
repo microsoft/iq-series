@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.46.1.21595",
-      "templateHash": "10473718635495226384"
+      "templateHash": "17820852174177056767"
     }
   },
   "parameters": {
@@ -24,7 +24,7 @@
     },
     "location": {
       "type": "string",
-      "defaultValue": "eastus2",
+      "defaultValue": "eastus",
       "metadata": {
         "description": "Azure region — must support agentic retrieval (see https://learn.microsoft.com/azure/search/search-region-support)"
       }
