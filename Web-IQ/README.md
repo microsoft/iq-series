@@ -29,13 +29,13 @@ This folder contains the Web IQ episodes of The Microsoft IQ Series, including h
 
 | API | Endpoint | What it returns |
 |---|---|---|
+| **Auto** | <code>POST&nbsp;/auto</code> | Typed evidence (text, images, videos, weather, time zones, and more) with **result-scoped citations** in a single call |
 | **Web Search** | <code>POST&nbsp;/search/web</code> | Ranked passages with freshness signals (`crawledAt`, `lastUpdatedAt`). Full-document formats (`text`, `html`, `markdown`) require full-document access. Supports `site:` operators, language/region, and location |
 | **News Search** | <code>POST&nbsp;/search/news</code> | Trusted news from the **last 14 days**, with publisher, content, and thumbnail |
 | **Images Search** | <code>POST&nbsp;/search/images</code> | Images with generated captions and host pages; filter by aspect ratio, size, color, and watermark |
 | **Videos Search** | <code>POST&nbsp;/search/videos</code> | Videos with AI summaries, embeddable players, and optional **moments** that deep-link to the most relevant segment |
 | **Places Search** | <code>POST&nbsp;/search/places</code> | Structured place information, including addresses, opening hours, reviews, photos, and query-relevant passages. Does not require full-document access |
 | **Browse** | <code>POST&nbsp;/browse</code> | Extracted content from a specific URL, with **on-demand live crawl** for pages not yet indexed. Requires full-document access |
-| **Auto** | <code>POST&nbsp;/auto</code> | Typed evidence (text, images, videos, weather, time zones, and more) with **result-scoped citations** in a single call |
 | **Commerce Search (Private Preview)** | <code>POST&nbsp;/search/commerce/products</code> | Ranked products and seller offers for a product query |
 | **Commerce Offers (Private Preview)** | <code>POST&nbsp;/fetch/commerce/products/offers</code> | Seller offers for product, SKU, or representative-offer identifiers returned by Commerce Search |
 | **Commerce Product Details (Private Preview)** | <code>POST&nbsp;/fetch/commerce/products/details</code> | Product name, description, and aggregate rating for product or SKU identifiers returned by Commerce Search |
