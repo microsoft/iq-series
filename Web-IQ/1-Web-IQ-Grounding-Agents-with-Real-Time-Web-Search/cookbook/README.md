@@ -4,10 +4,10 @@ This folder contains the hands-on cookbook for Episode 1 of The Web IQ Series.
 
 ## 📋 Prerequisites
 
-- **A paid Azure subscription and a Web IQ resource** — Passage-only access is publicly available. [Create a Web IQ billing resource in the Azure portal](https://learn.microsoft.com/en-us/web-iq/get-started/deploy-azure-portal), then connect it in the [Web IQ portal](https://webiq.microsoft.ai/) to get an App ID. Azure credits cannot be used for Web IQ.
-- **A Web IQ API key** — In the [Web IQ Portal → Profile Management](https://webiq.microsoft.ai/profiles/), open the **Authentication** tab and select **Create API Key**. The **Profile** tab shows your per-second quota (default: `15 QPS`) and which services your key can call. Use a passage-only AppID for the Auto example in Step 9.
+- **A paid Azure subscription and a Web IQ resource** — Passage-only access is publicly available. [Create a Web IQ billing resource in the Azure portal](https://learn.microsoft.com/en-us/web-iq/get-started/deploy-azure-portal), then connect it in the [Web IQ Developer Portal](https://webiq.microsoft.ai/) to get an App ID. Azure credits cannot be used for Web IQ.
+- **A Web IQ API key** — In the Web IQ Developer Portal's [Profile Management](https://webiq.microsoft.ai/profiles/), open the **Authentication** tab and select **Create API Key**. The **Profile** tab shows your per-second quota (default: `15 QPS`) and which services your key can call.
 - **Python 3.10+** installed
-- *(Optional — Steps 2 and 8)* **Full-document access** for comparing formats and using Browse. Set `FULL_DOCUMENT_ACCESS = True` in the notebook's authentication code cell only after access is enabled for your profile. Otherwise, these examples are skipped explicitly. See [Passages and content formats](https://learn.microsoft.com/en-us/web-iq/concepts/content-formats).
+- *(Optional — Steps 2 and 8)* **Full-document access** for comparing formats and for the full-document Browse example. Set `FULL_DOCUMENT_ACCESS = True` in the notebook's authentication code cell only after access is enabled for your profile. Otherwise, the format comparison is skipped and Browse returns passages. See [Passages and content formats](https://learn.microsoft.com/en-us/web-iq/concepts/content-formats).
 - *(Optional — Step 10 only)* A **Microsoft Foundry project** with a chat model deployment, plus `az login` so `DefaultAzureCredential` can authenticate
 - *(Optional — Step 14)* **Commerce access (Private Preview)** enabled for your AppID. Commerce is **not available on all accounts**. Leave `COMMERCE_ACCESS = False` unless access has been enabled; see the [Commerce API reference](https://learn.microsoft.com/en-us/web-iq/reference/commerce) to request access.
 
@@ -55,7 +55,7 @@ The [**Web IQ Cookbook**](./web-iq-cookbook.ipynb) walks you through Web IQ APIs
 | 5 | Images Search with aspect ratio, size, and watermark filters | `POST /search/images` |
 | 6 | Videos Search with freshness filters and moments | `POST /search/videos` |
 | 7 | Places Search — addresses, opening hours, and source passages | `POST /search/places` |
-| 8 | Browse a specific URL, with live crawl and `202` polling *(requires full-document access)* | `POST /browse` |
+| 8 | Browse a specific URL, with live crawl and `202` polling | `POST /browse` |
 | 9 | Auto — Web/News passage evidence with result-scoped citations | `POST /auto` |
 | 10 | Ground a model's answer with numbered citations | Web IQ + Microsoft Foundry *(optional)* |
 | 11 | Errors, rate limits, and retries | All |
@@ -63,7 +63,7 @@ The [**Web IQ Cookbook**](./web-iq-cookbook.ipynb) walks you through Web IQ APIs
 | 13 | Instrumentation — citation and click telemetry | Ping URLs |
 | 14 | Commerce (Private Preview) — Search, Offers, and Product Details *(optional; not available on all accounts)* | `POST /search/commerce/products`<br>`POST /fetch/commerce/products/offers`<br>`POST /fetch/commerce/products/details` |
 
-Places and Auto are generally available. Auto has no `contentFormat` request parameter: use an AppID without full-document access to receive passages. The notebook's `FULL_DOCUMENT_ACCESS` flag only controls optional examples; it does not change your AppID's permissions.
+Places and Auto are generally available. Auto works with every AppID: without full-document access, evidence content is passages; with it, web evidence can include full documents. Auto has no `contentFormat` request parameter, and the notebook's `FULL_DOCUMENT_ACCESS` flag doesn't change your AppID's access.
 
 **Commerce is in Private Preview, limited to select Azure customers, and not available on all accounts.** Access isn't guaranteed and the API contract may change. Set `COMMERCE_ACCESS = True` in the authentication cell only after your AppID is enabled. To request access, open a [Web IQ Support request](https://aka.ms/webiq-support-form), choose **Authentication & Access** > **API Key Set-up**, select **Create a support request**, and include your AppID from Profile Management.
 
@@ -106,7 +106,7 @@ Open the notebook and use Copilot Chat to help you learn and experiment:
 
 - [Episode 1 README](../README.md)
 - [Web IQ overview](../../README.md)
-- [Web IQ Quick Start](https://webiq.microsoft.ai/documentation/quick-start/?view=md)
-- [Web IQ Error Handling](https://webiq.microsoft.ai/documentation/error-handling/?view=md)
+- [Web IQ Quick Start](https://learn.microsoft.com/en-us/web-iq/get-started/quickstart)
+- [Web IQ Error Handling](https://learn.microsoft.com/en-us/web-iq/reference/error-handling)
 - [Web IQ Playground](https://webiq.microsoft.ai/playground/)
 - [Web IQ Support](https://aka.ms/microsoft-webiq-support)
