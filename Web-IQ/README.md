@@ -12,7 +12,7 @@ This folder contains the Web IQ episodes of The Microsoft IQ Series, including h
 
 | **Episode**                                                                                                          | **Description**                                                                 | **Video**     | **Cookbook**                                                                              |
 |-----------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|---------------|--------------------------------------------------------------------------------------------|
-| [Web IQ: Grounding Agents with Real-Time Web Search](./1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/README.md) | Explore every Web IQ API — Web, News, Images, Videos, Browse, and Auto — then ground a model's answer in live sources with citations and connect Web IQ as an MCP server | [Watch Now 🎥](https://youtu.be/5O7ZsSHhzpg) | [Cookbook](./1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/) |
+| [Web IQ: Grounding Agents with Real-Time Web Search](./1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/README.md) | Explore Web IQ APIs — Web, News, Images, Videos, Places, Browse, and Auto — then ground a model's answer in live sources with citations and connect Web IQ as an MCP server | [Watch Now 🎥](https://youtu.be/5O7ZsSHhzpg) | [Cookbook](./1-Web-IQ-Grounding-Agents-with-Real-Time-Web-Search/cookbook/) |
 
 ## ✨ Why Web IQ
 
@@ -33,10 +33,11 @@ This folder contains the Web IQ episodes of The Microsoft IQ Series, including h
 | **News Search** | <code>POST&nbsp;/search/news</code> | Trusted news from the **last 14 days**, with publisher, content, and thumbnail |
 | **Images Search** | <code>POST&nbsp;/search/images</code> | Images with generated captions and host pages; filter by aspect ratio, size, color, and watermark |
 | **Videos Search** | <code>POST&nbsp;/search/videos</code> | Videos with AI summaries, embeddable players, and optional **moments** that deep-link to the most relevant segment |
+| **Places Search** | <code>POST&nbsp;/search/places</code> | Structured place information, including addresses, opening hours, reviews, photos, and query-relevant passages. Does not require full-document access |
 | **Browse** | <code>POST&nbsp;/browse</code> | Extracted content from a specific URL, with **on-demand live crawl** for pages not yet indexed. Requires full-document access |
-| **Auto (Beta)** | <code>POST&nbsp;/auto</code> | Typed evidence (text, images, videos, weather, time zones, and more) with **result-scoped citations** in a single call |
+| **Auto** | <code>POST&nbsp;/auto</code> | Typed evidence (text, images, videos, weather, time zones, and more) with **result-scoped citations** in a single call |
 
-All endpoints live at `https://api.microsoft.ai/v3/`, share one error schema, and are also available as tools on the **Web IQ MCP server** at `https://api.microsoft.ai/v3/mcp`.
+Places and Auto are generally available. All endpoints live at `https://api.microsoft.ai/v3/` and share one error schema. For the tools available on the **Web IQ MCP server** at `https://api.microsoft.ai/v3/mcp`, use `tools/list` with your profile.
 
 ## 🔌 Ways to Integrate
 
