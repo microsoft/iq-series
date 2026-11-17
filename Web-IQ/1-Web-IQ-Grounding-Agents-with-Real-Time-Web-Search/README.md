@@ -26,7 +26,7 @@ In this episode you'll explore Web IQ APIs available to your profile and learn h
 | **Content format** | `passage` returns query-relevant paragraphs (up to 3,000 characters without full-document access); `text`, `markdown`, and `html` require full-document access. `maxLength` caps the characters per result — your token budget dial |
 | **Freshness signals** | `crawledAt`, `lastUpdatedAt`, and `querySignals.freshness` tell your agent how current a source is and whether the query needs recent results |
 | **Verticals** | Web, News (last 14 days), Images, Videos, and Places each return vertical-specific fields such as publisher, captions, video moments, and place addresses |
-| **Browse and live crawl** | Requires full-document access. Read a specific URL; with `liveCrawl="fallback"`, Web IQ crawls un-indexed pages on demand and returns `202` until content is ready |
+| **Browse and live crawl** | Read a specific URL as passages (any AppID) or as a full document (full-document access); with `liveCrawl="fallback"`, Web IQ crawls un-indexed pages on demand and returns `202` until content is ready |
 | **Auto** | One call that returns typed evidence — text, media, weather, time zones, and more — each with its own citations |
 | **Commerce (Private Preview)** | Optional Commerce Search, Offers, and Product Details APIs for product discovery and lookup; not available on all accounts |
 | **MCP server** | The same capabilities as tools at `https://api.microsoft.ai/v3/mcp` for VS Code, GitHub Copilot, and any MCP client |
@@ -38,7 +38,7 @@ In this episode you'll explore Web IQ APIs available to your profile and learn h
 2. Control your token budget with `maxLength` and optionally compare **content formats** with full-document access
 3. Target results with **`site:` operators, language/region markets, and location**
 4. Retrieve **News**, **Images** (with filters), **Videos** (with moments), and **Places** (with addresses and opening hours)
-5. Optionally **Browse** a specific URL with on-demand live crawl (requires full-document access)
+5. **Browse** a specific URL with on-demand live crawl
 6. Try **Auto** for Web/News passage evidence with result-scoped citations
 7. **Ground a model's answer** in numbered Web IQ sources with inline citations — optionally using a model deployed in Microsoft Foundry
 8. Handle **errors, rate limits, and retries** with Web IQ's shared error schema
@@ -55,11 +55,11 @@ Ready to get hands-on? Head to the [Episode 1 Cookbook](./cookbook/) for prerequ
 ## 🔗 Learn More
 
 - 🌐 [Microsoft Web IQ](https://webiq.microsoft.ai/)
-- 📖 [Quick Start](https://webiq.microsoft.ai/documentation/quick-start/?view=md)
-- 📖 [API reference — Web](https://webiq.microsoft.ai/documentation/api-reference/web/?view=md) · [News](https://webiq.microsoft.ai/documentation/api-reference/news/?view=md) · [Images](https://webiq.microsoft.ai/documentation/api-reference/images/?view=md) · [Videos](https://webiq.microsoft.ai/documentation/api-reference/videos/?view=md) · [Places](https://learn.microsoft.com/en-us/web-iq/reference/places) · [Browse](https://webiq.microsoft.ai/documentation/api-reference/browse/?view=md) · [Auto](https://learn.microsoft.com/en-us/web-iq/reference/auto)
-- 📖 [MCP Server](https://webiq.microsoft.ai/documentation/mcp/?view=md)
-- 📖 [Instrumentation](https://webiq.microsoft.ai/documentation/instrumentation/?view=md)
-- 📖 [FAQ — including how Web IQ differs from Grounding with Bing](https://webiq.microsoft.ai/documentation/faq/?view=md)
+- 📖 [Quick Start](https://learn.microsoft.com/en-us/web-iq/get-started/quickstart)
+- 📖 [API reference — Web](https://learn.microsoft.com/en-us/web-iq/reference/web-search) · [News](https://learn.microsoft.com/en-us/web-iq/reference/news-search) · [Images](https://learn.microsoft.com/en-us/web-iq/reference/image-search) · [Videos](https://learn.microsoft.com/en-us/web-iq/reference/video-search) · [Places](https://learn.microsoft.com/en-us/web-iq/reference/places) · [Browse](https://learn.microsoft.com/en-us/web-iq/reference/browse) · [Auto](https://learn.microsoft.com/en-us/web-iq/reference/auto)
+- 📖 [MCP Server](https://learn.microsoft.com/en-us/web-iq/integrations/mcp)
+- 📖 [Instrumentation](https://learn.microsoft.com/en-us/web-iq/guides/instrumentation)
+- 📖 [FAQ](https://learn.microsoft.com/en-us/web-iq/resources/faq)
 - 🧪 [Web IQ Playground](https://webiq.microsoft.ai/playground/)
 
 ## 💬 Community

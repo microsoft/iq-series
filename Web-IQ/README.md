@@ -35,7 +35,7 @@ This folder contains the Web IQ episodes of The Microsoft IQ Series, including h
 | **Images Search** | <code>POST&nbsp;/search/images</code> | Images with generated captions and host pages; filter by aspect ratio, size, color, and watermark |
 | **Videos Search** | <code>POST&nbsp;/search/videos</code> | Videos with AI summaries, embeddable players, and optional **moments** that deep-link to the most relevant segment |
 | **Places Search** | <code>POST&nbsp;/search/places</code> | Structured place information, including addresses, opening hours, reviews, photos, and query-relevant passages. Does not require full-document access |
-| **Browse** | <code>POST&nbsp;/browse</code> | Extracted content from a specific URL, with **on-demand live crawl** for pages not yet indexed. Requires full-document access |
+| **Browse** | <code>POST&nbsp;/browse</code> | Extracted content from a specific URL, with **on-demand live crawl** for pages not yet indexed. Passages for every AppID; full documents need full-document access |
 | **Commerce Search (Private Preview)** | <code>POST&nbsp;/search/commerce/products</code> | Ranked products and seller offers for a product query |
 | **Commerce Offers (Private Preview)** | <code>POST&nbsp;/fetch/commerce/products/offers</code> | Seller offers for product, SKU, or representative-offer identifiers returned by Commerce Search |
 | **Commerce Product Details (Private Preview)** | <code>POST&nbsp;/fetch/commerce/products/details</code> | Product name, description, and aggregate rating for product or SKU identifiers returned by Commerce Search |
@@ -48,7 +48,7 @@ Places and Auto are generally available. All endpoints live at `https://api.micr
 
 - **REST API** — `POST` a JSON body with an `x-apikey` header (or an Entra ID bearer token). Works from any language.
 - **MCP server** — Plug Web IQ into VS Code, GitHub Copilot, or any MCP-compatible agent framework over Streamable HTTP.
-- **SDKs** — See [SDKs and Libraries](https://webiq.microsoft.ai/documentation/sdk/?view=md) for official packages.
+- **SDKs** — See [SDKs](https://learn.microsoft.com/en-us/web-iq/integrations/sdk) for official packages.
 - **Playground** — Build requests interactively in the [Web IQ Playground](https://webiq.microsoft.ai/playground/) and copy generated code in cURL, Python, JavaScript, C#, Java, Go, or Ruby.
 
 ## 🤔 Web IQ vs. Grounding with Bing
@@ -61,10 +61,10 @@ Places and Auto are generally available. All endpoints live at `https://api.micr
 
 ### 1. Prerequisites
 
-- **A paid Azure subscription and a Web IQ resource** — Passage-only access is publicly available. [Create a Web IQ billing resource in the Azure portal](https://learn.microsoft.com/en-us/web-iq/get-started/deploy-azure-portal), then connect it in the [Web IQ portal](https://webiq.microsoft.ai/) to get an App ID. Azure credits cannot be used for Web IQ.
-- **An API key** — In the [Web IQ Portal → Profile Management](https://webiq.microsoft.ai/profiles/), select **Create API Key**. The same page shows your per-second quota (default: **15 QPS**) and which services your profile can call.
+- **A paid Azure subscription and a Web IQ resource** — Passage-only access is publicly available. [Create a Web IQ billing resource in the Azure portal](https://learn.microsoft.com/en-us/web-iq/get-started/deploy-azure-portal), then connect it in the [Web IQ Developer Portal](https://webiq.microsoft.ai/) to get an App ID. Azure credits cannot be used for Web IQ.
+- **An API key** — In the Web IQ Developer Portal's [Profile Management](https://webiq.microsoft.ai/profiles/), select **Create API Key**. The same page shows your per-second quota (default: **15 QPS**) and which services your profile can call.
 - **Python 3.10+** installed
-- *(Optional)* **Full-document access** for the format comparison and Browse examples. See [Passages and content formats](https://learn.microsoft.com/en-us/web-iq/concepts/content-formats) for defaults, limits, and how to request access. The grounded-answer step can optionally use a model in a Microsoft Foundry project.
+- *(Optional)* **Full-document access** for the format comparison and the full-document Browse example. See [Passages and content formats](https://learn.microsoft.com/en-us/web-iq/concepts/content-formats) for defaults, limits, and how to request access. The grounded-answer step can optionally use a model in a Microsoft Foundry project.
 
 ### 2. Run the Cookbook
 
@@ -75,14 +75,14 @@ The cookbook notebook lives in the [`1-Web-IQ-Grounding-Agents-with-Real-Time-We
 ## 🔗 Learn More
 
 - 🌐 [Microsoft Web IQ](https://webiq.microsoft.ai/)
-- 📖 [Documentation overview](https://webiq.microsoft.ai/documentation/overview/)
-- 📖 [Quick Start](https://webiq.microsoft.ai/documentation/quick-start/?view=md)
-- 📖 [Authentication](https://webiq.microsoft.ai/documentation/authentication/?view=md)
-- 📖 [MCP Server](https://webiq.microsoft.ai/documentation/mcp/?view=md)
-- 📖 [Error Handling](https://webiq.microsoft.ai/documentation/error-handling/?view=md)
-- 📖 [Supported Languages and Regions](https://webiq.microsoft.ai/documentation/supported-languages-and-regions/?view=md)
-- 📖 [Instrumentation](https://webiq.microsoft.ai/documentation/instrumentation/?view=md)
-- 📖 [FAQ](https://webiq.microsoft.ai/documentation/faq/?view=md)
+- 📖 [Documentation overview](https://learn.microsoft.com/en-us/web-iq/overview)
+- 📖 [Quick Start](https://learn.microsoft.com/en-us/web-iq/get-started/quickstart)
+- 📖 [Authentication](https://learn.microsoft.com/en-us/web-iq/get-started/authentication)
+- 📖 [MCP Server](https://learn.microsoft.com/en-us/web-iq/integrations/mcp)
+- 📖 [Error Handling](https://learn.microsoft.com/en-us/web-iq/reference/error-handling)
+- 📖 [Supported Languages and Regions](https://learn.microsoft.com/en-us/web-iq/reference/supported-languages-regions)
+- 📖 [Instrumentation](https://learn.microsoft.com/en-us/web-iq/guides/instrumentation)
+- 📖 [FAQ](https://learn.microsoft.com/en-us/web-iq/resources/faq)
 - 🧾 [OpenAPI specification](https://webiq.microsoft.ai/documentation/openapi.json)
 - 🛟 [Web IQ Support](https://aka.ms/microsoft-webiq-support)
 - 💬 Ask your questions in our [Discussions](https://aka.ms/iq/discussions)
