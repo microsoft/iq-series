@@ -9,6 +9,7 @@ This folder contains the hands-on cookbook for Episode 1 of The Web IQ Series.
 - **Python 3.10+** installed
 - *(Optional — Steps 2 and 8)* **Full-document access** for comparing formats and using Browse. Set `FULL_DOCUMENT_ACCESS = True` in the notebook's authentication code cell only after access is enabled for your profile. Otherwise, these examples are skipped explicitly. See [Passages and content formats](https://learn.microsoft.com/en-us/web-iq/concepts/content-formats).
 - *(Optional — Step 10 only)* A **Microsoft Foundry project** with a chat model deployment, plus `az login` so `DefaultAzureCredential` can authenticate
+- *(Optional — Step 14)* **Commerce access (Private Preview)** enabled for your AppID. Commerce is **not available on all accounts**. Leave `COMMERCE_ACCESS = False` unless access has been enabled; see the [Commerce API reference](https://learn.microsoft.com/en-us/web-iq/reference/commerce) to request access.
 
 > **💡 A Web IQ billing resource is required.** You don't need a search index or knowledge base. After provisioning the billing resource and obtaining your API key, run the examples allowed by your profile. Step 10 uses a Microsoft Foundry model if you've configured one, and otherwise prints the grounded prompt so you can use any model.
 
@@ -43,7 +44,7 @@ Copy-Item .env.sample .env   # Windows PowerShell
 
 ## 📓 Cookbook Notebook
 
-The [**Web IQ Cookbook**](./web-iq-cookbook.ipynb) walks you through every Web IQ API, step by step:
+The [**Web IQ Cookbook**](./web-iq-cookbook.ipynb) walks you through Web IQ APIs available to your profile, including optional Commerce examples:
 
 | Step | Topic | API |
 |---|---|---|
@@ -60,8 +61,13 @@ The [**Web IQ Cookbook**](./web-iq-cookbook.ipynb) walks you through every Web I
 | 11 | Errors, rate limits, and retries | All |
 | 12 | Web IQ as an MCP server — VS Code config and JSON-RPC | `https://api.microsoft.ai/v3/mcp` |
 | 13 | Instrumentation — citation and click telemetry | Ping URLs |
+| 14 | Commerce (Private Preview) — Search, Offers, and Product Details *(optional; not available on all accounts)* | `POST /search/commerce/products`<br>`POST /fetch/commerce/products/offers`<br>`POST /fetch/commerce/products/details` |
 
 Places and Auto are generally available. Auto has no `contentFormat` request parameter: use an AppID without full-document access to receive passages. The notebook's `FULL_DOCUMENT_ACCESS` flag only controls optional examples; it does not change your AppID's permissions.
+
+**Commerce is in Private Preview, limited to select Azure customers, and not available on all accounts.** Access isn't guaranteed and the API contract may change. Set `COMMERCE_ACCESS = True` in the authentication cell only after your AppID is enabled. To request access, open a [Web IQ Support request](https://aka.ms/webiq-support-form), choose **Authentication & Access** > **API Key Set-up**, select **Create a support request**, and include your AppID from Profile Management.
+
+The Commerce examples use identifiers returned by Commerce Search rather than invented IDs. They preserve each response's `clickUrl` exactly and omit offers without a usable link; `displayUrl` is never used for navigation. Prices are displayed in ISO 4217 minor units rather than assuming every currency uses two decimal places. See the [Commerce API reference](https://learn.microsoft.com/en-us/web-iq/reference/commerce) for supported markets, quotas, and offer-link requirements.
 
 ### Quick Start
 
@@ -77,6 +83,8 @@ Places and Auto are generally available. Auto has no `contentFormat` request par
 | `403` on one endpoint only | Your profile isn't allowed to call that service. Check **allowed services** in Profile Management |
 | `403 AuthContentFormatForbidden` | Full-document formats aren't enabled for your profile. Use `passage` and leave `FULL_DOCUMENT_ACCESS = False` |
 | `429 AuthUserThrottled` | You've hit your per-second quota (default: `15 QPS`). The helper retries automatically and honors `retryAfter`; reduce your request rate if it persists |
+| `429 AuthUserDailyUsageExceeded` in Commerce | Your AppID's daily quota is exhausted. The helper surfaces this error without waiting through a daily reset; quotas reset at 00:00 UTC |
+| Commerce examples are skipped, or return `403 AuthUnauthorizedService` | Commerce is in **Private Preview** and isn't available on all accounts. Leave `COMMERCE_ACCESS = False` until access is enabled for your AppID; request access using the guidance above |
 | `404` from Browse | The URL isn't indexed. Use `liveCrawl="fallback"` (the cookbook does this by default) |
 | Step 10 prints a prompt instead of an answer | `FOUNDRY_PROJECT_ENDPOINT` isn't set — that's expected if you're not using Microsoft Foundry |
 | Videos are returned without moment metadata | Moments are optional. Step 6 reports this explicitly; the video title and URL are still usable |

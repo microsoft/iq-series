@@ -36,8 +36,13 @@ This folder contains the Web IQ episodes of The Microsoft IQ Series, including h
 | **Places Search** | <code>POST&nbsp;/search/places</code> | Structured place information, including addresses, opening hours, reviews, photos, and query-relevant passages. Does not require full-document access |
 | **Browse** | <code>POST&nbsp;/browse</code> | Extracted content from a specific URL, with **on-demand live crawl** for pages not yet indexed. Requires full-document access |
 | **Auto** | <code>POST&nbsp;/auto</code> | Typed evidence (text, images, videos, weather, time zones, and more) with **result-scoped citations** in a single call |
+| **Commerce Search (Private Preview)** | <code>POST&nbsp;/search/commerce/products</code> | Ranked products and seller offers for a product query |
+| **Commerce Offers (Private Preview)** | <code>POST&nbsp;/fetch/commerce/products/offers</code> | Seller offers for product, SKU, or representative-offer identifiers returned by Commerce Search |
+| **Commerce Product Details (Private Preview)** | <code>POST&nbsp;/fetch/commerce/products/details</code> | Product name, description, and aggregate rating for product or SKU identifiers returned by Commerce Search |
 
 Places and Auto are generally available. All endpoints live at `https://api.microsoft.ai/v3/` and share one error schema. For the tools available on the **Web IQ MCP server** at `https://api.microsoft.ai/v3/mcp`, use `tools/list` with your profile.
+
+> **Commerce is in Private Preview and is not available on all accounts.** Access is limited to select Azure customers, isn't guaranteed, and the API contract may change. The cookbook's three Commerce examples are optional and skipped unless you set `COMMERCE_ACCESS = True` after access is enabled for your AppID. See the [Commerce API reference and access-request guidance](https://learn.microsoft.com/en-us/web-iq/reference/commerce).
 
 ## 🔌 Ways to Integrate
 

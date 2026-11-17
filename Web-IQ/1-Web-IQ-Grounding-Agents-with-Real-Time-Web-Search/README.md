@@ -16,7 +16,7 @@ Foundry IQ, Work IQ, and Fabric IQ ground agents in your organization's knowledg
 - Draws on **licensed sources, structured data, and the open web** — not SERP scraping — across 100+ languages and markets
 - Is available over **REST** and an **MCP server** (JSON-RPC 2.0) — model-agnostic, with no inference lock-in
 
-In this episode you'll explore every Web IQ API and learn how to turn its results into a grounded, cited answer.
+In this episode you'll explore Web IQ APIs available to your profile and learn how to turn their results into a grounded, cited answer.
 
 ## 🧠 Key Concepts
 
@@ -28,6 +28,7 @@ In this episode you'll explore every Web IQ API and learn how to turn its result
 | **Verticals** | Web, News (last 14 days), Images, Videos, and Places each return vertical-specific fields such as publisher, captions, video moments, and place addresses |
 | **Browse and live crawl** | Requires full-document access. Read a specific URL; with `liveCrawl="fallback"`, Web IQ crawls un-indexed pages on demand and returns `202` until content is ready |
 | **Auto** | One call that returns typed evidence — text, media, weather, time zones, and more — each with its own citations |
+| **Commerce (Private Preview)** | Optional Commerce Search, Offers, and Product Details APIs for product discovery and lookup; not available on all accounts |
 | **MCP server** | The same capabilities as tools at `https://api.microsoft.ai/v3/mcp` for VS Code, GitHub Copilot, and any MCP client |
 | **Instrumentation** | Optional citation and click telemetry that shows which results your model cited and which ones users opened |
 
@@ -43,6 +44,9 @@ In this episode you'll explore every Web IQ API and learn how to turn its result
 8. Handle **errors, rate limits, and retries** with Web IQ's shared error schema
 9. Connect Web IQ to VS Code as an **MCP server**, and call its tools directly over JSON-RPC
 10. Understand **instrumentation** for citation and click telemetry
+11. Optionally try **Commerce (Private Preview)**: search products, retrieve seller offers, and fetch product details using identifiers from the search response
+
+> **Commerce is in Private Preview and is not available on all accounts.** Access is limited to select Azure customers and isn't guaranteed. Leave `COMMERCE_ACCESS = False` unless your AppID is enabled. See the [Commerce API reference](https://learn.microsoft.com/en-us/web-iq/reference/commerce) for supported markets, offer-link requirements, and how to request access.
 
 ## 📓 Try the Cookbook
 
