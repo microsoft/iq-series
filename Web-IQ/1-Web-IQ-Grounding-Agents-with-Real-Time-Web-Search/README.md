@@ -16,7 +16,7 @@ Foundry IQ, Work IQ, and Fabric IQ ground agents in your organization's knowledg
 - Draws on **licensed sources, structured data, and the open web** — not SERP scraping — across 100+ languages and markets
 - Is available over **REST** and an **MCP server** (JSON-RPC 2.0) — model-agnostic, with no inference lock-in
 
-In this episode you'll explore every Web IQ API and learn how to turn its results into a grounded, cited answer.
+In this episode you'll explore Web IQ APIs available to your profile and learn how to turn their results into a grounded, cited answer.
 
 ## 🧠 Key Concepts
 
@@ -25,9 +25,10 @@ In this episode you'll explore every Web IQ API and learn how to turn its result
 | **Grounding** | Building a model's answer from retrieved, current sources instead of its training memory — the most reliable way to reduce hallucinations |
 | **Content format** | `passage` returns query-relevant paragraphs (up to 3,000 characters without full-document access); `text`, `markdown`, and `html` require full-document access. `maxLength` caps the characters per result — your token budget dial |
 | **Freshness signals** | `crawledAt`, `lastUpdatedAt`, and `querySignals.freshness` tell your agent how current a source is and whether the query needs recent results |
-| **Verticals** | Web, News (last 14 days), Images, and Videos each return vertical-specific fields such as publisher, captions, and video moments |
+| **Verticals** | Web, News (last 14 days), Images, Videos, and Places each return vertical-specific fields such as publisher, captions, video moments, and place addresses |
 | **Browse and live crawl** | Requires full-document access. Read a specific URL; with `liveCrawl="fallback"`, Web IQ crawls un-indexed pages on demand and returns `202` until content is ready |
-| **Auto (Beta)** | One call that returns typed evidence — text, media, weather, time zones, and more — each with its own citations |
+| **Auto** | One call that returns typed evidence — text, media, weather, time zones, and more — each with its own citations |
+| **Commerce (Private Preview)** | Optional Commerce Search, Offers, and Product Details APIs for product discovery and lookup; not available on all accounts |
 | **MCP server** | The same capabilities as tools at `https://api.microsoft.ai/v3/mcp` for VS Code, GitHub Copilot, and any MCP client |
 | **Instrumentation** | Optional citation and click telemetry that shows which results your model cited and which ones users opened |
 
@@ -36,13 +37,16 @@ In this episode you'll explore every Web IQ API and learn how to turn its result
 1. Call **Web Search** and read the response anatomy — content, freshness, provenance, and query signals
 2. Control your token budget with `maxLength` and optionally compare **content formats** with full-document access
 3. Target results with **`site:` operators, language/region markets, and location**
-4. Retrieve **News**, **Images** (with filters), and **Videos** (with moments)
+4. Retrieve **News**, **Images** (with filters), **Videos** (with moments), and **Places** (with addresses and opening hours)
 5. Optionally **Browse** a specific URL with on-demand live crawl (requires full-document access)
-6. Try **Auto (Beta)** for typed evidence with result-scoped citations
+6. Try **Auto** for Web/News passage evidence with result-scoped citations
 7. **Ground a model's answer** in numbered Web IQ sources with inline citations — optionally using a model deployed in Microsoft Foundry
 8. Handle **errors, rate limits, and retries** with Web IQ's shared error schema
 9. Connect Web IQ to VS Code as an **MCP server**, and call its tools directly over JSON-RPC
 10. Understand **instrumentation** for citation and click telemetry
+11. Optionally try **Commerce (Private Preview)**: search products, retrieve seller offers, and fetch product details using identifiers from the search response
+
+> **Commerce is in Private Preview and is not available on all accounts.** Access is limited to select Azure customers and isn't guaranteed. Leave `COMMERCE_ACCESS = False` unless your AppID is enabled. See the [Commerce API reference](https://learn.microsoft.com/en-us/web-iq/reference/commerce) for supported markets, offer-link requirements, and how to request access.
 
 ## 📓 Try the Cookbook
 
@@ -52,7 +56,7 @@ Ready to get hands-on? Head to the [Episode 1 Cookbook](./cookbook/) for prerequ
 
 - 🌐 [Microsoft Web IQ](https://webiq.microsoft.ai/)
 - 📖 [Quick Start](https://webiq.microsoft.ai/documentation/quick-start/?view=md)
-- 📖 [API reference — Web](https://webiq.microsoft.ai/documentation/api-reference/web/?view=md) · [News](https://webiq.microsoft.ai/documentation/api-reference/news/?view=md) · [Images](https://webiq.microsoft.ai/documentation/api-reference/images/?view=md) · [Videos](https://webiq.microsoft.ai/documentation/api-reference/videos/?view=md) · [Browse](https://webiq.microsoft.ai/documentation/api-reference/browse/?view=md) · [Auto (Beta)](https://webiq.microsoft.ai/documentation/api-reference/auto/?view=md)
+- 📖 [API reference — Web](https://webiq.microsoft.ai/documentation/api-reference/web/?view=md) · [News](https://webiq.microsoft.ai/documentation/api-reference/news/?view=md) · [Images](https://webiq.microsoft.ai/documentation/api-reference/images/?view=md) · [Videos](https://webiq.microsoft.ai/documentation/api-reference/videos/?view=md) · [Places](https://learn.microsoft.com/en-us/web-iq/reference/places) · [Browse](https://webiq.microsoft.ai/documentation/api-reference/browse/?view=md) · [Auto](https://learn.microsoft.com/en-us/web-iq/reference/auto)
 - 📖 [MCP Server](https://webiq.microsoft.ai/documentation/mcp/?view=md)
 - 📖 [Instrumentation](https://webiq.microsoft.ai/documentation/instrumentation/?view=md)
 - 📖 [FAQ — including how Web IQ differs from Grounding with Bing](https://webiq.microsoft.ai/documentation/faq/?view=md)
